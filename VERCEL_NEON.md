@@ -11,7 +11,8 @@ En Neon, abre **Connect** y copia la cadena con *Connection pooling* activado (e
 En **Project → Settings → Environment Variables**, agrega los nombres de `env/.env.example`:
 
 - `DATABASE_URL`: cadena pooled de Neon.
-- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`: valores de Cloudinary.
+- `APP_URL`: URL pública estable de producción, por ejemplo `https://tu-dominio-principal`. Se usa como base de los QR; no configures aquí un dominio de preview o deployment.
+- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`: valo![alt text](image.png)res de Cloudinary.
 - `NARRATION_ORIGIN`: solo si se publica el servicio de voz en otra URL HTTPS.
 
 Selecciona **Production**, **Preview** y **Development** para `DATABASE_URL` y las variables de Cloudinary. Las claves nunca deben comenzar por `NEXT_PUBLIC_`.

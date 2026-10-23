@@ -1,0 +1,35 @@
+.roleapp{min-height:100dvh;display:flex;flex-direction:column}
+.rolelayout{width:100%;max-width:1600px;flex:1;min-width:0}
+.rolecontent{width:100%;max-width:1320px;min-width:0;margin-inline:auto;padding:clamp(24px,3vw,48px) clamp(16px,3vw,48px) 110px}
+.rolecontent>.pageheading{align-items:flex-start}
+.rolecontent>.panel,.rolecontent>.rolewelcome,.rolecontent>.reportstats,.rolecontent>.notice,.rolecontent>.memberregistry,.rolecontent>.reportworkspace,.rolecontent>.devotionworkspace{min-width:0}
+.rolecontent .reportstats{grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(8px,1.5vw,16px)}
+.rolecontent .reportstats>div{min-width:0;text-align:center}
+.rolecontent .reportstats span{line-height:1.5}
+.rolecontent .memberregistry,.rolecontent .reportworkspace,.rolecontent .devotionworkspace{width:100%}
+.rolecontent .memberregistry>.panel,.rolecontent .reportworkspace>.panel,.rolecontent .devotionworkspace>.panel{min-width:0}
+.rolecontent .memberregistry .filterbar{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-items:end}
+.rolecontent .memberregistry .filterbar label,.rolecontent .memberregistry .filterbar .primary{width:100%;min-width:0}
+.rolenavmobile{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);justify-items:stretch;gap:4px;padding:9px 8px max(9px,env(safe-area-inset-bottom))}
+.rolenavmobile button{min-width:0;min-height:48px;align-content:center;justify-items:center;gap:5px;padding:5px 2px;border-radius:8px;font-size:clamp(8px,2.2vw,10px);line-height:1.2;text-align:center}
+.rolenavmobile button span{max-width:100%;overflow-wrap:anywhere}
+.rolenavmobile .chosen{background:var(--blue-light)}
+@media(max-width:649px){
+ .rolecontent{padding:24px 16px 105px}
+ .rolecontent .reportstats{grid-template-columns:1fr}
+ .rolecontent .reportstats>div{display:grid;justify-items:center;gap:3px;padding:14px}
+ .rolecontent .memberregistry .filterbar{grid-template-columns:minmax(0,1fr)}
+ .rolecontent .memberregistry .panelheading{align-items:flex-start;padding-inline:16px}
+ .rolecontent .memberregistry>.panel{width:100%}
+}
+@media(min-width:650px) and (max-width:1099px){
+ .rolecontent{padding:34px clamp(24px,4vw,44px) 110px}
+}
+@media(min-width:1100px){
+ .rolelayout{grid-template-columns:250px minmax(0,1fr);align-items:stretch}
+ .rolenav{min-width:0}
+ .rolecontent{padding:42px clamp(28px,3vw,52px) 56px}
+ .rolecontent .memberregistry .filterbar{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+ .rolecontent .memberregistry .panelheading{padding-inline:24px}
+ .rolenavmobile{display:none}
+}
