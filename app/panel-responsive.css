@@ -20,9 +20,14 @@
 .profileheader .profile-nav>a:hover{background:var(--blue-light);color:var(--navy)}
 .profileheader .profile-nav>a[aria-current="page"]{background:var(--blue-light);color:var(--navy);font-weight:600;box-shadow:inset 0 -2px var(--gold)}
 .profileheader .profile-nav svg,.profileheader .profile-signout svg{width:18px;height:18px;flex-shrink:0}
+.profile-header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.profileheader .theme-inline,.profile-menu-toggle{display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--navy)}
+.profileheader .theme-inline svg,.profile-menu-toggle svg{width:20px;height:20px}
+.profile-menu-toggle{display:none}
 .profileheader .profile-signout{display:grid;place-items:center;flex:0 0 40px;width:40px;height:40px;border-radius:8px;color:var(--muted)}
 .profileheader .profile-signout:hover{background:var(--blue-light);color:var(--navy)}
 .profile-mobile-nav{display:none}
+.profilepage~.theme-toggle{display:none}
 .rolenavmobile{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);justify-items:stretch;gap:4px;padding:9px 8px max(9px,env(safe-area-inset-bottom))}
 .rolenavmobile button{min-width:0;min-height:48px;align-content:center;justify-items:center;gap:5px;padding:5px 2px;border-radius:8px;font-size:clamp(8px,2.2vw,10px);line-height:1.2;text-align:center}
 .rolenavmobile button span{max-width:100%;overflow-wrap:anywhere}
@@ -35,13 +40,19 @@
  .profileheader .brand-wordmark{font-size:17px}
  .profileheader .brand-wordmark small{font-size:5px;letter-spacing:.8px}
  .profileheader .profile-nav{display:none}
+ .profile-header-actions{gap:5px}
+ .profileheader .theme-inline,.profile-menu-toggle{display:grid;width:38px;height:38px;min-width:38px;min-height:38px;border-radius:8px}
+ .profileheader .theme-inline svg,.profile-menu-toggle svg{width:18px;height:18px}
+ .profile-menu-toggle{display:grid}
  .profileheader .profile-signout{flex-basis:34px;width:34px;height:36px}
  .profilemain{padding-bottom:calc(90px + env(safe-area-inset-bottom))}
- .profile-mobile-nav{position:fixed;z-index:40;left:0;right:0;bottom:0;display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);align-items:center;gap:2px;width:calc(100% - max(12px,env(safe-area-inset-left,0px)) - max(12px,env(safe-area-inset-right,0px)));max-width:700px;margin-inline:auto;padding:5px 6px max(8px,env(safe-area-inset-bottom));border:1px solid var(--line);border-radius:16px 16px 0 0;background:var(--surface);color:var(--ink);box-shadow:0 5px 30px #10375c20}
+ .profile-mobile-nav{position:fixed;z-index:40;left:0;right:0;bottom:var(--reader-nav-bottom, max(10px,env(safe-area-inset-bottom,0px)));display:grid;grid-auto-flow:column;grid-auto-columns:minmax(0,1fr);align-items:center;gap:2px;width:calc(100% - max(12px,env(safe-area-inset-left,0px)) - max(12px,env(safe-area-inset-right,0px)));max-width:700px;margin-inline:auto;padding:5px 6px 8px;border:1px solid var(--line);border-radius:16px;background:var(--surface);color:var(--ink);box-shadow:0 5px 30px #10375c20}
+.profile-mobile-nav[hidden]{display:none}
  .profile-mobile-nav>a{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;min-width:0;min-height:52px;padding:5px 2px;border-radius:9px;color:var(--muted);font-size:clamp(8px,2.3vw,10px);line-height:1.2;text-align:center}
  .profile-mobile-nav>a span{max-width:100%;overflow-wrap:anywhere}
  .profile-mobile-nav>a[aria-current="page"]{background:var(--blue-light);color:var(--navy);font-weight:600;box-shadow:inset 0 -2px var(--gold)}
  .profile-mobile-nav>a:hover{background:var(--blue-light);color:var(--navy)}
+ html[data-theme=dark] .profile-mobile-nav{background:var(--surface);color:var(--ink)}
  .rolecontent .reportstats{grid-template-columns:1fr}
  .rolecontent .reportstats>div{display:grid;justify-items:center;gap:3px;padding:14px}
  .rolecontent .memberregistry .filterbar{grid-template-columns:minmax(0,1fr)}
