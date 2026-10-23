@@ -61,6 +61,9 @@ export default defineConfig(async ({ command }) => {
         inspectorPort: false,
         config: {
           ...localBindingConfig,
+          ...(command === "serve" && !managedLinux
+            ? { vars: { SHALOM_ADMIN_EMAIL: "seedy@sites.test" } }
+            : {}),
           ...(command === "serve"
             ? {
                 services: [

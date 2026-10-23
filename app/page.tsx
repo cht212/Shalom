@@ -1,2 +1,2 @@
-import Dashboard from './dashboard';
-export default function Home(){return <Dashboard/>}
+import Bible from './bible';
+export default function Home(){return <Bible/>}
