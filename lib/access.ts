@@ -13,6 +13,6 @@ export function visibleCells(actor:Actor,data:ChurchData):Set<string>{
 export function scopedData(actor:Actor,data:ChurchData):ChurchData{
  if(actor.role==='pending')return emptyChurch;
  const ids=visibleCells(actor,data);const own=actor.role==='disciple';const cells=data.cells.filter(c=>ids.has(c.id));
- return {sectors:data.sectors.filter(s=>cells.some(c=>c.sector===s.id)),cells,people:data.people.filter(p=>own?p.id===actor.person:ids.has(p.cell)),attendance:data.attendance.filter(a=>own?a.person===actor.person:ids.has(a.cell)),reports:own?[]:data.reports.filter(r=>ids.has(r.cell)),devotions:actor.role==='admin'?data.devotions:[]};
+ return {sectors:data.sectors.filter(s=>cells.some(c=>c.sector===s.id)),cells,people:data.people.filter(p=>own?p.id===actor.person:ids.has(p.cell)),attendance:data.attendance.filter(a=>own?a.person===actor.person:ids.has(a.cell)),reports:own?[]:data.reports.filter(r=>ids.has(r.cell)&&(actor.role!=='pastor'||r.status==='sent')),devotions:actor.role==='admin'?data.devotions:[]};
 }
 export function canReview(actor:Actor,cell:string,data:ChurchData){return ['admin','cell_leader','sector_leader','pastor'].includes(actor.role)&&visibleCells(actor,data).has(cell)}

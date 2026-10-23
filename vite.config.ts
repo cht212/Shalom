@@ -54,7 +54,7 @@ export default defineConfig(async ({ command }) => {
     },
     plugins: [
       vinext(),
-      sites({ mockAuth: !managedLinux }),
+      sites({ mockAuth: false }),
       connectorPreview(),
       cloudflare({
         viteEnvironment: { name: "rsc", childEnvironments: ["ssr"] },
@@ -62,7 +62,7 @@ export default defineConfig(async ({ command }) => {
         config: {
           ...localBindingConfig,
           ...(command === "serve" && !managedLinux
-            ? { vars: { SHALOM_ADMIN_EMAIL: "seedy@sites.test" } }
+            ? { vars: { NARRATION_ORIGIN: "http://127.0.0.1:8766" } }
             : {}),
           ...(command === "serve"
             ? {

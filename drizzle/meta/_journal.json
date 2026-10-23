@@ -15,6 +15,13 @@
       "when": 1792729299038,
       "tag": "0001_magical_nitro",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1792755936090,
+      "tag": "0002_aromatic_jamie_braddock",
+      "breakpoints": true
     }
   ]
 }

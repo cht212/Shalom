@@ -1,21 +1,27 @@
-﻿# Shalom · Christian Church
+﻿# Shalom
 
-Mobile-first Bible reader and church management app. Brand: navy, gold, warm white and olive.
+Aplicación para lectura pública de la Biblia, devocionales personales y organización de células, diseñada desde el móvil con los logos de Shalom.
 
-## Run locally
+## Ejecutar localmente
 
-Run `npm run dev`, then open http://127.0.0.1:5173/. The homepage is the Bible. For the development administrator, visit `/signin-with-chatgpt?return_to=/panel`. The portable Vite profile supplies the test account `seedy@sites.test` as administrator only for local development; that identity and binding are not part of the production build.
+Desde `C:\Users\User\Documents\Shalom\shalom-web`, ejecuta `npm run dev` y abre la dirección de la terminal. Inicia sesión en `/ingresar` con un usuario y contraseña de Shalom.
 
-## Identity and roles
+Las cinco cuentas locales de prueba están en `.sites-runtime/USUARIOS_PRUEBA.txt`. Ese archivo es privado, no se publica ni se incluye en Git. Usa contraseñas nuevas para personas reales. El administrador entrega las cuentas desde Panel → Accesos y roles. Primero registra la persona y después vincúlala a una cuenta.
 
-Production uses Sites / ChatGPT sign-in. `SHALOM_ADMIN_EMAIL` must be configured in Sites runtime secrets with the owner's verified email. The administrator registers people and assigns account emails to disciple, cell leader, sector leader or pastor. No emails are sent. Users sign in with the assigned email. Unassigned or disabled accounts have no church access; they can still read the Bible and save their personal study markers.
+## Funcionamiento
 
-The API validates authorization server-side. Disciples access their own person record and devotions. Leaders see their assigned cell, sector leaders their sector, and pastors church-wide information. Administrative bulk writes and account management are administrator-only. Leaders can record attendance and monthly reports within their scope. Disciples write their own chapter reflections; authorized leaders can review them and leave feedback. Legacy administrator devotional records are retained separately.
+El discípulo completa sus propios datos, escribe devocionales desde la página principal y consulta su historial debajo del formulario. Los líderes revisan miembros y devocionales de su célula o sector. El pastor tiene alcance general. Solo el administrador gestiona cuentas y estructura.
 
-## Data and Bible
+Desde Perfil o Personas, los responsables pueden generar una invitación QR para una célula dentro de su alcance. Vence en 30 días. El formulario público pide nombre, teléfono, edad y autorización; registra la primera asistencia. El enlace debe ser accesible desde el celular: `127.0.0.1` funciona solamente en la computadora que ejecuta la web.
 
-D1 stores church records with optimistic revisions, role assignments, authored devotions, leader feedback and account-owned highlights/bookmarks. Anonymous reading preferences and markers stay in that browser only. Bible text is bundled locally: 66 books, 1189 chapters of public-domain Reina-Valera 1909. Source, revision and attribution are in `public/bible/SOURCE.md`; regenerate with `python scripts/import-bible.py`. Empty verse placeholders in the source's versification are omitted; text is not generated or paraphrased. Speech uses the browser/device voice.
+Informes prepara las seis tablas de `FORMATOScd.docx`, ubicado en la carpeta superior. La copia interna de la plantilla tiene borrados los datos de ejemplo. Los campos faltantes quedan vacíos. Descarga el Word, revisa los datos, confirma la revisión y envíalo al pastor dentro de la aplicación. No envía correos. El informe enviado conserva los datos de ese momento. La vista previa muestra tablas; abre el Word para comprobar la paginación final.
 
-Apply generated migrations to local D1 after building (see starter scripts). Production publication applies migrations automatically. `node --experimental-strip-types tests/access.mjs` verifies role scopes. TypeScript and a production build pass. Local HTTP integration verified role assignment, devotional ownership, cross-cell denial, review feedback, report permissions and private study isolation. Browser visual QA was unavailable.
+## Alojamiento y datos
 
-Word-template generation and automatic reminder delivery remain pending. Supply the actual .docx template before implementing its layout and field mapping. QR enrollment still uses the administrator's existing panel workflow; public self-enrollment is not enabled.
+El servidor utiliza Vinext/Cloudflare Workers y D1, también en desarrollo local. Otro hosting puede requerir adaptar el servidor y la base de datos; no basta con copiar el código a un hosting PHP o estático. El inicio de sesión utiliza cookies HttpOnly, contraseñas con PBKDF2 y salt individual, y validación de permisos en el servidor. Conserva copias de los datos antes de migrar.
+
+La Biblia Reina-Valera 1909 está incluida localmente. La voz neuronal usa un servicio Python: consulta `scripts/VOICE.md` para instalarlo y alojarlo.
+
+## Comprobaciones
+
+`node node_modules/typescript/bin/tsc --noEmit` revisa los tipos. `python tests/local-workflows.py` comprueba las cinco cuentas, permisos, QR, perfiles, devocionales e informes contra el servidor local, y limpia sus registros temporales. La revisión visual en navegador y la paginación del Word requieren comprobación manual.

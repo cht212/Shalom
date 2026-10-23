@@ -1,0 +1,8 @@
+'use client';
+import {useState} from 'react';
+import {Headphones,X} from 'lucide-react';
+import books from '../public/bible/books.json';
+export default function NarrationPlayer({book,chapter,onClose}:{book:string;chapter:number;onClose:()=>void}){
+ const [ready,setReady]=useState(false),[failed,setFailed]=useState(false),[rate,setRate]=useState(1);
+ return <section className="chapter-audio" aria-label="Reproductor del capítulo"><div className="chapter-audio-heading"><Headphones size={20}/><div><b>{books.find(b=>b.id===book)?.name} {chapter}</b><small>Voz femenina · Español · Generada por IA</small></div><button className="close-audio" aria-label="Cerrar audio" onClick={onClose}><X size={18}/></button></div>{!ready&&!failed&&<p role="status">Preparando el audio del capítulo. La primera reproducción puede tardar unos momentos…</p>}{failed?<div role="alert" className="notice error">No se pudo cargar el audio. Comprueba que el servicio de voz local esté iniciado con npm run dev.</div>:<audio key={book+chapter} controls autoPlay preload="metadata" src={'/api/narration?book='+book+'&chapter='+chapter+'&v=2'} onLoadedMetadata={e=>{e.currentTarget.playbackRate=rate;setReady(true)}} onError={()=>setFailed(true)} aria-label={'Escuchar '+books.find(b=>b.id===book)?.name+' '+chapter} onRateChange={e=>setRate(e.currentTarget.playbackRate)}/>}<label className="audio-speed">Velocidad<select aria-label="Velocidad de narración" value={rate} onChange={e=>{const value=Number(e.target.value);setRate(value);const player=e.currentTarget.closest('section')?.querySelector('audio');if(player)player.playbackRate=value}}>{[.85,1,1.1,1.25].map(v=><option key={v} value={v}>{v}×</option>)}</select></label></section>
+}
