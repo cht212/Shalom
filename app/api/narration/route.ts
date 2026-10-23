@@ -1,4 +1,4 @@
-import {env} from 'cloudflare:workers';
+const env = process.env;
 import books from '../../../public/bible/books.json';
 export async function GET(request:Request){
  const params=new URL(request.url).searchParams;const book=params.get('book');const chapter=Number(params.get('chapter'));

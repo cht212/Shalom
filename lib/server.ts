@@ -1,7 +1,7 @@
-import {env} from 'cloudflare:workers';
 import {getShalomUser} from '../app/auth';
 import {type Actor,type ChurchData,emptyChurch} from './access';
-export const db=()=>env.DB!;
+import {db} from './database';
+export {db};
 export async function state(){const row=await db().prepare('SELECT data,revision FROM church WHERE id=?').bind('shalom').first<{data:string,revision:number}>();return {data:row?JSON.parse(row.data) as ChurchData:emptyChurch,revision:row?.revision??0}}
 export async function actor():Promise<Actor|null>{
  const user=await getShalomUser();if(!user)return null;
