@@ -27,6 +27,13 @@ npm.cmd run db:push
 
 No ejecutes ese comando hasta haber puesto una URL válida. Crea las tablas `church`, `accounts`, `credentials`, `sessions`, `invites`, `attempts`, `devotions` y `study` en Neon.
 
+Las columnas `sessions.expires` e `invites.expires` guardan fechas Unix en milisegundos y deben ser `BIGINT`. Si las tablas ya se crearon con `INTEGER`, ejecuta una vez en Neon SQL Editor:
+
+```sql
+ALTER TABLE sessions ALTER COLUMN expires TYPE BIGINT;
+ALTER TABLE invites ALTER COLUMN expires TYPE BIGINT;
+```
+
 ## 4. Despliega
 
 1. Sube estos cambios a `main` con Git.
