@@ -25,7 +25,7 @@ export function ConnectorError({
           variant="outline"
           className="h-auto min-h-9 max-w-full whitespace-normal text-left"
         >
-          <a href={recovery.action.href} target="_top">
+          <a href={recovery.action.href}>
             <LinkIcon aria-hidden="true" />
             <span className="min-w-0 break-words">{recovery.action.label}</span>
           </a>
