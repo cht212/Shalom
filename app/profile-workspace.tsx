@@ -1,5 +1,79 @@
-﻿'use client';
-import {useEffect,useState} from 'react';
-import MemberRegistry from './member-registry';
-export default function ProfileWorkspace(){const [info,setInfo]=useState<any>(null),[error,setError]=useState(''),[message,setMessage]=useState(''),[busy,setBusy]=useState(false);useEffect(()=>{fetch('/api/profile').then(r=>r.json()).then(setInfo).catch(()=>setError('No se pudo cargar el perfil.'))},[]);if(!info)return <p>Cargando perfil…</p>;const p=info.person;return <><section className="panel profileedit"><h2>Mis datos personales</h2>{message&&<div role="status" className="notice">{message}</div>}{error&&<div role="alert" className="notice error">{error}</div>}{p?<form onSubmit={async e=>{e.preventDefault();setBusy(true);setError('');setMessage('');const f=new FormData(e.currentTarget);try{const r=await fetch('/api/profile',{method:'PATCH',headers:{'Content-Type':'application/json'},body:JSON.stringify({name:f.get('name'),phone:f.get('phone'),age:Number(f.get('age')),address:f.get('address'),maritalStatus:f.get('maritalStatus')})});const j=await r.json() as any;if(!r.ok)throw Error(j.error);setMessage('Datos actualizados. Se usarán en los próximos informes.')}catch(e){setError((e as Error).message)}finally{setBusy(false)}}}><label>Nombre y apellidos<input name="name" required defaultValue={p.name}/></label><div className="formcolumns"><label>Teléfono<input name="phone" type="tel" required defaultValue={p.phone}/></label><label>Edad<input name="age" type="number" min={0} max={120} required defaultValue={p.age??''}/></label></div><label>Dirección<input name="address" maxLength={300} defaultValue={p.address||''} placeholder="Completa tu dirección"/></label><label>Estado civil<select name="maritalStatus" defaultValue={p.maritalStatus||''}><option value="">Por completar</option>{['Soltero/a','Casado/a','Conviviente','Viudo/a','Divorciado/a'].map(s=><option key={s}>{s}</option>)}</select></label><button className="primary" disabled={busy}>{busy?'Guardando…':'Guardar mis datos'}</button></form>:<p>El administrador debe vincular tu cuenta a tu registro de persona.</p>}</section>{info.actor.role!=='disciple'&&info.actor.role!=='pending'&&<MemberRegistry/>}</>}
+'use client';
 
+import {useEffect,useState} from 'react';
+
+type ProfilePerson={
+ name:string;
+ phone:string;
+ age:number|null;
+ address:string;
+ maritalStatus?:string;
+};
+
+type ProfileResponse={person:ProfilePerson|null};
+
+export default function ProfileWorkspace(){
+ const [person,setPerson]=useState<ProfilePerson|null>(null);
+ const [loaded,setLoaded]=useState(false);
+ const [error,setError]=useState('');
+ const [message,setMessage]=useState('');
+ const [busy,setBusy]=useState(false);
+
+ useEffect(()=>{
+  fetch('/api/profile')
+   .then(async response=>{
+    const result=await response.json() as ProfileResponse & {error?:string};
+    if(!response.ok)throw Error(result.error||'No se pudo cargar el perfil.');
+    setPerson(result.person);
+   })
+   .catch(cause=>setError((cause as Error).message))
+   .finally(()=>setLoaded(true));
+ },[]);
+
+ if(!loaded)return <p>Cargando perfil…</p>;
+
+ return <section className="panel profileedit">
+  <h2>Mis datos personales</h2>
+  {message&&<div role="status" className="notice">{message}</div>}
+  {error&&<div role="alert" className="notice error">{error}</div>}
+  {person?<form onSubmit={async event=>{
+   event.preventDefault();
+   setBusy(true);
+   setError('');
+   setMessage('');
+   const form=new FormData(event.currentTarget);
+   try{
+    const response=await fetch('/api/profile',{
+     method:'PATCH',
+     headers:{'Content-Type':'application/json'},
+     body:JSON.stringify({
+      name:form.get('name'),
+      phone:form.get('phone'),
+      age:Number(form.get('age')),
+      address:form.get('address'),
+      maritalStatus:form.get('maritalStatus'),
+     }),
+    });
+    const result=await response.json() as {error?:string};
+    if(!response.ok)throw Error(result.error||'No se pudieron actualizar los datos.');
+    setMessage('Datos actualizados. Se usarán en los próximos informes.');
+   }catch(cause){
+    setError((cause as Error).message);
+   }finally{
+    setBusy(false);
+   }
+  }}>
+   <label>Nombre y apellidos<input name="name" required defaultValue={person.name}/></label>
+   <div className="formcolumns">
+    <label>Teléfono<input name="phone" type="tel" required defaultValue={person.phone}/></label>
+    <label>Edad<input name="age" type="number" min={0} max={120} required defaultValue={person.age??''}/></label>
+   </div>
+   <label>Dirección<input name="address" maxLength={300} defaultValue={person.address||''} placeholder="Completa tu dirección"/></label>
+   <label>Estado civil<select name="maritalStatus" defaultValue={person.maritalStatus||''}>
+    <option value="">Por completar</option>
+    {['Soltero/a','Casado/a','Conviviente','Viudo/a','Divorciado/a'].map(status=><option key={status}>{status}</option>)}
+   </select></label>
+   <button className="primary" disabled={busy}>{busy?'Guardando…':'Guardar mis datos'}</button>
+  </form>:<p>El administrador debe vincular tu cuenta a su registro de persona.</p>}
+ </section>;
+}
