@@ -34,4 +34,15 @@ No ejecutes ese comando hasta haber puesto una URL válida. Crea las tablas `chu
 3. Vercel ejecutará `npm run build` y publicará la aplicación.
 4. Prueba inicio de sesión, registro por QR, panel y gestión de cuentas en la URL de producción.
 
+## Crear las primeras cuentas
+
+La base de datos no crea usuarios automáticamente. Si Neon todavía no tiene cuentas, puedes crear el administrador principal y los dos líderes de célula del Sector 6 desde una terminal Windows, apuntando el script a la misma base Neon de producción:
+
+1. En la raíz del proyecto, crea temporalmente `.env.local` con `DATABASE_URL` de Neon. No publiques ni compartas ese archivo.
+2. Ejecuta `npm.cmd run provision:neon` y confirma escribiendo `PROVISIONAR CUENTAS SHALOM EN NEON`.
+3. El script se detiene si ya existe cualquier cuenta. Si la base está vacía, crea `admin.shalom` como administrador principal y `albert` y `jenni` como líderes de la célula Sector 6.
+4. Copia las contraseñas aleatorias que imprime y guárdalas en un gestor de contraseñas. No se guardan en el proyecto. Elimina `.env.local` al terminar.
+
+Este paso escribe directamente en Neon; no hace falta desplegar el proyecto ni ejecutar la aplicación localmente. El script nunca modifica una base que no sea Neon ni una base que ya tenga cuentas.
+
 Cloudinary queda preparado mediante variables. La aplicación actual no cuenta aún con una pantalla o endpoint de carga; conectaremos esas claves al crear esa función.

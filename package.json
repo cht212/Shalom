@@ -13,6 +13,7 @@
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "drizzle-kit generate",
     "db:push": "node scripts/db-push.mjs",
+    "provision:neon": "node scripts/provision-neon-accounts.mjs",
     "voice": "node scripts/run-voice.mjs"
   },
   "dependencies": {
