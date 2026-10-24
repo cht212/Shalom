@@ -2,7 +2,7 @@
 
 Audio is generated locally with Piper 1.4.2 and the Spanish SHARVARD medium voice, female speaker F=1. This is synthetic neural speech, not a human narrator or cloned voice. No API key and no external audio redirect. Bible text is read only from the bundled RV1909 chapters. The voice service accepts a fixed book/chapter pair, not arbitrary text or remote URLs.
 
-`npm run dev` starts the local voice service automatically when installed. Existing local preview sessions can use the already-running service at 127.0.0.1:8766. The audio button is only in the Bible chapter view. Audio is cached in ignored `.sites-runtime/chapter-audio/`; the first generation takes longer. Subsequent requests and byte ranges use the cache.
+Run `npm run voice` in one terminal and `npm run dev` in another. The local application uses the voice service at 127.0.0.1:8766 when `NARRATION_ORIGIN=http://127.0.0.1:8766` is configured. The audio button is only in the Bible chapter view. Audio is cached in ignored `.sites-runtime/chapter-audio/`; the first generation takes longer. Subsequent requests and byte ranges use the cache.
 
 One-time installation on Windows:
 
@@ -15,7 +15,7 @@ npm run dev
 
 On Linux/macOS, use `.sites-runtime/voice-env/bin/python` for pip. Keep the voice model and cache outside Git.
 
-For hosting, run this Python service on a private backend and set the Worker runtime secret `NARRATION_ORIGIN` to its address, with network access restricted to the application. The service is intended for local development; do not expose it directly to the public Internet without authentication, rate limits and a job queue. Alternatively pregenerate chapters and serve the resulting audio as hosted static assets. A conventional static hosting account cannot execute Piper.
+For hosting, either run this Python service on a protected backend and set `NARRATION_ORIGIN` to its HTTPS address, or pregenerate chapters and upload them with the structure `audio/BOOK/CHAPTER.wav` to public object storage such as Vercel Blob. The second option is recommended for stable production playback. Do not expose the generation service directly without authentication, rate limits and a job queue. When hosted audio is unavailable, the web application falls back to the device's Spanish speech synthesis.
 
 ## Attribution and licenses
 

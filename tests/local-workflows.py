@@ -1,8 +1,8 @@
 """Integration checks against the local dev server, with isolated test records."""
-import io,json,re,urllib.request,urllib.error,zipfile,uuid,sqlite3
+import io,json,os,re,urllib.request,urllib.error,zipfile,uuid,sqlite3
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-BASE='http://127.0.0.1:5173'
+BASE=os.environ.get('TEST_BASE_URL','http://127.0.0.1:3000').rstrip('/')
 marker='workflow-'+uuid.uuid4().hex
 cookies={}
 def request(path,role=None,body=None,method=None):

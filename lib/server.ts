@@ -7,7 +7,7 @@ export async function actor():Promise<Actor|null>{
  const user=await getShalomUser();if(!user)return null;
  const base={id:user.userId,email:user.email.toLowerCase(),name:user.displayName,cell:null,sector:null,person:null};
 
- const row=await db().prepare('SELECT * FROM accounts WHERE id=? AND active=1').bind(base.id).first<any>();
+ const row=await db().prepare('SELECT * FROM accounts WHERE id=? AND active=1').bind(base.id).first<{id:string;user_id:string|null;name:string;role:Actor['role'];cell:string|null;sector:string|null;person:string|null}>();
  if(!row||row.user_id&&row.user_id!==user.userId)return {...base,role:'pending'};
  if(!row.user_id){const claim=await db().prepare('UPDATE accounts SET user_id=? WHERE id=? AND user_id IS NULL').bind(user.userId,row.id).run();if(!claim.meta.changes)return {...base,role:'pending'}}
  return {...base,name:row.name,role:row.role,cell:row.cell,sector:row.sector,person:row.person};
@@ -16,3 +16,7 @@ export function json(value:unknown,status=200){return Response.json(value,{statu
 export const denied=()=>json({error:'No tienes permiso para esta acción.'},403);
 export const unauth=()=>json({error:'Inicia sesión para continuar.'},401);
 export function dateLima(){return new Intl.DateTimeFormat('en-CA',{timeZone:'America/Lima'}).format(new Date())}
+export function requestIp(request:Request){
+ const forwarded=request.headers.get('x-forwarded-for')?.split(',')[0]?.trim();
+ return request.headers.get('cf-connecting-ip')||forwarded||'local';
+}

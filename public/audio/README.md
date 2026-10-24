@@ -1,5 +1,7 @@
-﻿# Audio del capítulo
+# Audio de los capítulos
 
-La reproducción se integra dentro de la vista de Biblia mediante /api/narration. El audio lo genera el servicio local de voz neuronal y se conserva en .sites-runtime/chapter-audio; no se redirige a Wordproject ni se utiliza speechSynthesis.
+La aplicación intenta reproducir primero `/api/narration`. Si `NARRATION_ORIGIN` no está configurado o el servicio no responde, usa la voz en español disponible en el navegador o dispositivo.
 
-Consulta scripts/VOICE.md para la instalación, las licencias y el despliegue en otro hosting.
+Para conservar la voz neuronal de Piper en producción, genera previamente los WAV y sírvelos desde almacenamiento público (por ejemplo, Vercel Blob) con la estructura `audio/LIBRO/CAPITULO.wav`. Configura la URL base como `NARRATION_ORIGIN` en Vercel.
+
+Consulta `scripts/VOICE.md` para la instalación local, las licencias y las alternativas de despliegue.
