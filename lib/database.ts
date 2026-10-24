@@ -41,5 +41,10 @@ export function db() {
   return {
     prepare: (sql: string) => statement(sql),
     async batch(statements: Statement[]) { return Promise.all(statements.map((item) => item.run())); },
+    async transaction(commands:Array<{sql:string;values:Array<string|number|null>}>){
+      await client().begin(async transaction=>{
+        for(const command of commands)await transaction.unsafe(postgresSql(command.sql),command.values);
+      });
+    },
   };
 }

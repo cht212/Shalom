@@ -8,10 +8,10 @@
   "scripts": {
     "install:ci": "node scripts/install-ci.mjs",
     "dev": "next dev",
-    "build": "next build",
+    "build": "next build && node scripts/build-pwa.mjs",
     "start": "next start",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .next",
-    "test": "node --test tests/access.mjs tests/daily-verse.mjs",
+    "test": "node --test tests/access.mjs tests/daily-verse.mjs tests/pwa.mjs tests/devotional-voice.mjs",
     "check": "npm run test && npm run build",
     "db:generate": "drizzle-kit generate",
     "db:push": "node scripts/db-push.mjs",

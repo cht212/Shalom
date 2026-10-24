@@ -11,3 +11,8 @@ export const credentials = pgTable('credentials',{account:text('account').primar
 export const sessions = pgTable('sessions',{token:text('token').primaryKey(),account:text('account').notNull(),expires:bigint('expires',{mode:'number'}).notNull()});
 export const invites = pgTable('invites',{token:text('token').primaryKey(),cell:text('cell').notNull(),createdBy:text('created_by').notNull(),expires:bigint('expires',{mode:'number'}).notNull(),active:integer('active').notNull().default(1)});
 export const attempts = pgTable('attempts',{key:text('key').primaryKey(),count:integer('count').notNull().default(0)});
+export const devotionAudio=pgTable('devotion_audio',{
+ devotionId:text('devotion_id').primaryKey().references(()=>devotions.id,{onDelete:'cascade'}),
+ mime:text('mime').notNull(),bytes:integer('bytes').notNull(),seconds:integer('seconds').notNull(),
+ data:text('data').notNull(),createdAt:bigint('created_at',{mode:'number'}).notNull(),
+});

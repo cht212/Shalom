@@ -5,7 +5,7 @@ import ProfileWorkspace from '../profile-workspace';
 import ProfileQrGenerator from '../profile-qr-generator';
 import {requireShalomUser} from '../auth';
 import {actor,state} from '../../lib/server';
-import {roleNames,visibleCells} from '../../lib/access';
+import {canAccessPanel,roleNames,visibleCells} from '../../lib/access';
 
 export const dynamic='force-dynamic';
 
@@ -34,16 +34,16 @@ export default async function Profile(){
     <span className="pill"><ShieldCheck size={13}/>{roleNames[a.role]}</span>
     {cell&&<p><b>Célula:</b> {cell.name}</p>}
     {sector&&<p><b>Sector:</b> {sector.name}</p>}
-    {a.role==='pending'&&<div className="notice neutral">El administrador debe asignarte un rol para activar tus devocionales y tu panel.</div>}
+    {a.role==='pending'&&<div className="notice neutral">El administrador debe asignarte un rol y una célula para activar las opciones de tu cuenta.</div>}
    </section>
    <ProfileWorkspace/>
    {canGenerateRegistration&&<ProfileQrGenerator cells={registrationCells}/>}
    <div className="profilelinks">
-    <Link className="panel" href="/panel">
+    {canAccessPanel(a.role)&&<Link className="panel" href="/panel">
      <LayoutDashboard size={23}/><span><b>Mi panel</b><small>Accede a las opciones de tu rol.</small></span><ArrowRight size={19}/>
-    </Link>
+    </Link>}
     {a.role!=='pending'&&<Link className="panel" href="/?view=devocional">
-     <PenLine size={23}/><span><b>{a.role==='disciple'?'Mis devocionales':'Mi devocional'}</b><small>{a.role==='disciple'?'Mis reflexiones y el acompañamiento de mi líder.':'Escribe tu reflexión y consulta las que enviaste.'}</small></span><ArrowRight size={19}/>
+     <PenLine size={23}/><span><b>Mi devocional</b><small>Escribe tu reflexión y consulta las que enviaste.</small></span><ArrowRight size={19}/>
     </Link>}
     <Link className="panel" href="/">
      <BookOpen size={23}/><span><b>Volver al inicio</b><small>El versículo de hoy y tu Biblia.</small></span><ArrowRight size={19}/>

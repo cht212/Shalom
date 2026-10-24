@@ -57,3 +57,7 @@ La base de datos no crea usuarios automáticamente. Si Neon todavía no tiene cu
 Este paso escribe directamente en Neon; no hace falta desplegar el proyecto ni ejecutar la aplicación localmente. El script nunca modifica una base que no sea Neon ni una base que ya tenga cuentas.
 
 Cloudinary queda preparado mediante variables. La aplicación actual no cuenta aún con una pantalla o endpoint de carga; conectaremos esas claves al crear esa función.
+
+## Devocional por voz
+
+La nueva función de grabación, transcripción y adjunto opcional usa `OPENAI_API_KEY` y la tabla privada `devotion_audio`. Ver [DEVOCIONAL_VOZ.md](DEVOCIONAL_VOZ.md) para configurar la clave y aplicar la migración aditiva [db/devotional-audio.sql](db/devotional-audio.sql). No se aplica durante el build. Los audios adjuntos de esta función se guardan en Neon y no usan una URL pública de Cloudinary.
