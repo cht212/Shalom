@@ -45,6 +45,18 @@ Una revisión distinta o un HTTP 409 conserva la copia local y muestra un aviso 
 
 El estado de conexión combina la señal del navegador y los fallos de red de la comprobación de sesión. Se vuelve a comprobar al recuperar conexión, al enfocar la aplicación y cada 30 segundos mientras está visible. El perfil, los registros administrativos y las sesiones no se conservan offline.
 
+## Buscar un pasaje de la Biblia
+
+La barra de lectura incluye búsqueda por nombre o referencia y tres controles: Libro, Capítulo y Versículo. En el celular se abre un panel inferior con botones grandes; en computadora se abre un cuadro centrado. Los libros se pueden filtrar por Antiguo y Nuevo Testamento.
+
+- `Pedro` ofrece `1 Pedro` y `2 Pedro` para elegir.
+- `Salmos 23` abre el capítulo completo.
+- `Juan 3:16`, `Jn3:16` o `1 Co 13:4` abren y seleccionan el versículo.
+- También se puede elegir el libro, tocar un capítulo y después un versículo, o pulsar «Leer capítulo completo».
+- Los enlaces `/?book=JHN&chapter=3&verse=16` respetan el versículo tanto online como al abrir la interfaz pública offline.
+
+La búsqueda reconoce nombres, abreviaturas y referencias en el dispositivo. Los capítulos se validan con el catálogo y los versículos con el texto real del libro antes de abrir una referencia. Para leer sin internet se necesita tener descargado ese libro. No requiere un servicio de IA.
+
 ## Audio
 
 La grabación personal de devocionales es una función distinta del audio de la Biblia. Su configuración, envío opcional y permisos están descritos en [DEVOCIONAL_VOZ.md](DEVOCIONAL_VOZ.md); sus archivos privados permanecen exclusivamente en red.
