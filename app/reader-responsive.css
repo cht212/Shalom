@@ -15,6 +15,21 @@ html{scroll-padding-top:90px}body{min-width:280px}.bibleapp{width:100%;min-width
 .reader-header-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}.bibleapp>.readerheader .theme-inline,.header-nav-toggle{display:grid;place-items:center;width:44px;height:44px;min-width:44px;min-height:44px;padding:0;border:1px solid var(--line);border-radius:9px;background:var(--surface);color:var(--navy)}.bibleapp>.readerheader .theme-inline svg,.header-nav-toggle svg{width:20px;height:20px}.header-nav-toggle:hover{background:var(--blue-light)}.reader-nav-shell[hidden]{display:none}.personal-devotional-page{width:calc(100% - var(--reader-gutter)*2);max-width:950px;margin:24px auto 0}.personal-devotional-page .devotionalhero{padding:22px}.personal-devotional-page .devotionform{padding:20px}.personal-devotional-page .devotionlist{grid-template-columns:1fr}.personal-devotional-page .devotiontoolbar{margin:18px 0}.personal-devotional-page .devotionsubmit{align-items:flex-start}.personal-devotional-page .devotionsubmit p{font-size:11px}.reader-nav-items{padding-top:8px}@media(max-width:359px){.bibleapp>.readerheader{gap:7px}.reader-header-actions{gap:4px}.bibleapp>.readerheader .shalom-brand{gap:6px}.bibleapp>.readerheader .brand-wordmark{font-size:17px}.bibleapp>.readerheader .shalom-emblem{width:30px;height:34px}}
 @media(min-width:1050px){.bibleapp{padding-bottom:0}.bibleapp>.readerheader{gap:20px}.reader-nav-shell,.reader-nav-shell[hidden]{position:static;display:flex;flex:1;min-width:0;width:auto;max-width:none;margin:0;border:0;border-radius:0;background:transparent;box-shadow:none;overflow:visible}.reader-nav-items,.reader-nav-items[hidden]{display:flex;justify-content:center;align-items:center;gap:4px;width:100%;padding:0}.reader-nav-items>a,.reader-nav-items>button{flex-direction:row;gap:8px;min-height:42px;padding:8px 10px;font-size:12px;white-space:nowrap}.reader-nav-items svg{width:18px;height:18px}.reader-nav-items .current{box-shadow:inset 0 -2px var(--gold);border-radius:8px}.bibleapp>.readerheader .header-nav-toggle{display:none}.bibleapp .verseactions{bottom:20px}}
 
+/* The public desktop site uses a traditional editorial header, not the app dock. */
+@media(min-width:1050px){
+ html:not([data-app-mode='standalone']) .bibleapp>.readerheader{min-height:86px;gap:30px;box-shadow:none}
+ html:not([data-app-mode='standalone']) .reader-nav-items{justify-content:flex-end;gap:30px}
+ html:not([data-app-mode='standalone']) .reader-nav-items>.web-only-nav-item{position:relative;flex:none;min-height:44px;padding:0;border-radius:0;background:transparent;box-shadow:none;color:var(--muted);font-size:13px;font-weight:650;letter-spacing:.1px}
+ html:not([data-app-mode='standalone']) .reader-nav-items>.web-only-nav-item:not(.web-account-link) svg{display:none}
+ html:not([data-app-mode='standalone']) .reader-nav-items>.web-only-nav-item:not(.web-account-link):hover{background:transparent;color:var(--navy)}
+ html:not([data-app-mode='standalone']) .reader-nav-items>.web-only-nav-item.current{background:transparent;color:var(--ink);box-shadow:none}
+ html:not([data-app-mode='standalone']) .reader-nav-items>.web-only-nav-item.current::after{content:'';position:absolute;left:0;right:0;bottom:3px;height:2px;border-radius:3px;background:var(--navy)}
+ html:not([data-app-mode='standalone']) .reader-nav-items>.web-account-link{gap:9px;min-height:44px;padding:0 18px;border:1px solid var(--navy);border-radius:999px;color:var(--navy);font-weight:700}
+ html:not([data-app-mode='standalone']) .reader-nav-items>.web-account-link:hover{background:var(--navy);color:#fff}
+ html:not([data-app-mode='standalone']) .reader-header-actions .theme-inline{border:0;border-radius:50%;background:var(--blue-light)}
+ html:not([data-app-mode='standalone']) .reader-header-actions .theme-inline:hover{background:#dcecff}
+}
+
 /* Reserve account navigation space while the first session request resolves. */
 .reader-nav-placeholder{display:block;min-height:52px;min-width:0;border-radius:9px;background:var(--blue-light);opacity:.45;pointer-events:none}
 @media(min-width:1050px){.reader-nav-placeholder{width:100px;min-height:42px}}

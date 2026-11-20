@@ -22,6 +22,6 @@ export default function ReaderNav({actor,sessionLoading=false,view,onHome,onRead
   <button className={'web-only-nav-item '+(view==='home'?'current':'')} aria-current={view==='home'?'page':undefined} onClick={onHome}><Home size={19}/><span>Inicio</span></button>
   <Link className="web-only-nav-item" href="/#comunidad"><UsersRound size={19}/><span>Comunidad</span></Link>
   <button className={'web-only-nav-item '+(view==='bible'?'current':'')} aria-current={view==='bible'?'page':undefined} onClick={onRead}><BookOpen size={19}/><span>Biblia</span></button>
-  {actor?<Link className="web-only-nav-item" href="/panel"><LayoutDashboard size={19}/><span>Mi panel</span></Link>:<Link className="web-only-nav-item" href="/ingresar?return_to=/panel"><LogIn size={19}/><span>Iniciar sesión</span></Link>}
+  {actor?<Link className="web-only-nav-item web-account-link" href="/panel"><LayoutDashboard size={19}/><span>Mi panel</span></Link>:<Link className="web-only-nav-item web-account-link" href="/ingresar?return_to=/panel"><LogIn size={19}/><span>Iniciar sesión</span></Link>}
  </div></nav>;
 }
