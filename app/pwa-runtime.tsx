@@ -15,7 +15,7 @@ export default function PwaRuntime({children}:{children:React.ReactNode}){
  const applying=useRef(false),dialog=useRef<HTMLDialogElement>(null);
  useEffect(()=>{
   const standalone=matchMedia('(display-mode: standalone)');
-  const check=()=>setInstalled(standalone.matches||!!(navigator as Navigator&{standalone?:boolean}).standalone);
+  const check=()=>{const appMode=standalone.matches||!!(navigator as Navigator&{standalone?:boolean}).standalone;setInstalled(appMode);document.documentElement.dataset.appMode=appMode?'standalone':'web'};
   void Promise.resolve().then(()=>{check();setIos(/iPad|iPhone|iPod/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)});
   const prompt=(event:Event)=>{event.preventDefault();setInstall(event as InstallEvent)};
   const didInstall=()=>{setInstalled(true);setInstall(null);setIosHelp(false)};
@@ -68,7 +68,7 @@ export default function PwaRuntime({children}:{children:React.ReactNode}){
   {!online&&privateSection?<main><OfflineMessage/></main>:children}
   <div className="pwa-tools">
    {!installed&&(ios||install)&&<button className="textbtn" onClick={requestInstall}>Instalar Shalom</button>}
-   <button className="textbtn" onClick={()=>{setDownloadsOpen(true);dialog.current?.showModal()}}>Administrar descargas</button>
+   {installed&&<button className="textbtn" onClick={()=>{setDownloadsOpen(true);dialog.current?.showModal()}}>Administrar descargas</button>}
    {iosHelp&&<p className="ios-install-help" role="status">En Safari toca <b>Compartir</b> → <b>Agregar a pantalla de inicio</b> → <b>Agregar</b>. Después abre Shalom desde el nuevo ícono.</p>}
    {notice&&<p role="status">{notice}</p>}
   </div>
