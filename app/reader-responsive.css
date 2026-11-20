@@ -34,3 +34,54 @@ html{scroll-padding-top:90px}body{min-width:280px}.bibleapp{width:100%;min-width
 .reader-nav-placeholder{display:block;min-height:52px;min-width:0;border-radius:9px;background:var(--blue-light);opacity:.45;pointer-events:none}
 @media(min-width:1050px){.reader-nav-placeholder{width:100px;min-height:42px}}
 .compactreader .verses{max-width:76ch;margin-inline:auto}.compactreader .verse{overflow-wrap:anywhere;word-break:normal}.compactreader .chapterheading{max-width:760px;margin-inline:auto}
+
+/* Browser Bible: a spacious study desk. The installed PWA keeps the compact reader above. */
+.web-bible-sidebar,.web-bible-study{display:none}
+@media(min-width:1050px){
+ html[data-app-mode='web'] .bible-main{background:#f3f0ec}
+ html[data-app-mode='web'] .readerlayout.compactreader.web-bible-layout{display:grid;grid-template-columns:168px minmax(560px,820px) 270px;width:100%;max-width:1450px;gap:24px;padding:28px 28px 48px;align-items:start}
+ html[data-app-mode='web'] .web-bible-sidebar{position:sticky;top:114px;display:flex;flex-direction:column;gap:6px;min-width:0;padding:8px 0}
+ html[data-app-mode='web'] .web-bible-label{display:block;color:var(--gold-ink);font-size:8px;font-weight:800;letter-spacing:1.45px}
+ html[data-app-mode='web'] .web-bible-sidebar>.web-bible-label{margin:0 12px 15px}
+ html[data-app-mode='web'] .web-bible-sidebar>button{display:flex;align-items:center;gap:12px;width:100%;min-height:48px;padding:11px 12px;border-radius:10px;color:var(--muted);font-size:12px;text-align:left}
+ html[data-app-mode='web'] .web-bible-sidebar>button:hover{background:#fff;color:var(--navy)}
+ html[data-app-mode='web'] .web-bible-sidebar>button.active{background:#fff;color:var(--ink);font-weight:750;box-shadow:0 8px 25px #26384a0a}
+ html[data-app-mode='web'] .web-bible-version{display:grid;gap:5px;margin-top:26px;padding:20px 12px;border-top:1px solid var(--line)}
+ html[data-app-mode='web'] .web-bible-version small{color:var(--gold-ink);font-size:8px;font-weight:800;letter-spacing:1px}
+ html[data-app-mode='web'] .web-bible-version b{font-size:11px;line-height:1.5}
+ html[data-app-mode='web'] .web-bible-version span{color:var(--muted);font-size:10px}
+ html[data-app-mode='web'] .web-bible-layout>.readerpaper{border:0;border-radius:18px;box-shadow:0 12px 45px #26384a0c}
+ html[data-app-mode='web'] .web-bible-layout .bible-navigation{grid-template-columns:minmax(260px,1fr) auto;align-items:center;padding:14px 18px;background:#fff}
+ html[data-app-mode='web'] .web-bible-layout .bible-search-trigger{min-height:48px;border:0;border-radius:999px;background:#f3f1ee;padding-inline:18px}
+ html[data-app-mode='web'] .web-bible-layout .bible-reference-controls{display:flex;gap:7px}
+ html[data-app-mode='web'] .web-bible-layout .bible-reference-controls>button{display:flex;gap:7px;min-height:44px;padding:8px 11px;border-radius:999px}
+ html[data-app-mode='web'] .web-bible-layout .bible-reference-controls>button>span{display:none}
+ html[data-app-mode='web'] .web-bible-layout .bible-reference-controls b{font-size:12px}
+ html[data-app-mode='web'] .web-bible-layout .chapterheading{max-width:700px;padding:55px 45px 28px}
+ html[data-app-mode='web'] .web-bible-layout .chapterheading h2{font-size:44px;color:var(--ink);letter-spacing:-.6px}
+ html[data-app-mode='web'] .web-bible-layout .verses{max-width:710px;padding:5px 46px 55px;font-size:21px!important;line-height:2.05}
+ html[data-app-mode='web'] .web-bible-layout .versegroup{display:inline;width:auto}
+ html[data-app-mode='web'] .web-bible-layout .versegroup:has(.inlineverseactions){display:block}
+ html[data-app-mode='web'] .web-bible-layout .verse{display:inline;width:auto;padding:3px 2px;border-radius:4px;line-height:inherit}
+ html[data-app-mode='web'] .web-bible-layout .verse sup{min-width:0;margin:0 6px 0 2px;font-size:10px}
+ html[data-app-mode='web'] .web-bible-layout .verse:hover{background:var(--gold-light)}
+ html[data-app-mode='web'] .web-bible-layout .inlineverseactions{display:flex;margin:8px 0 18px;font-family:'DM Sans',sans-serif;line-height:1.4}
+ html[data-app-mode='web'] .web-bible-layout .chapterpager{padding:24px 46px}
+ html[data-app-mode='web'] .web-bible-study{position:sticky;top:110px;display:grid;gap:0;overflow:hidden;border:1px solid var(--line);border-radius:16px;background:var(--surface);box-shadow:0 12px 45px #26384a0d}
+ html[data-app-mode='web'] .web-study-tabs{display:flex;gap:25px;padding:20px 20px 0;border-bottom:1px solid var(--line)}
+ html[data-app-mode='web'] .web-study-tabs b,html[data-app-mode='web'] .web-study-tabs span{padding-bottom:14px;font-size:13px}
+ html[data-app-mode='web'] .web-study-tabs b{color:var(--ink);border-bottom:2px solid var(--navy)}
+ html[data-app-mode='web'] .web-study-tabs span{color:var(--muted)}
+ html[data-app-mode='web'] .web-bible-study>section{padding:20px;border-bottom:1px solid var(--line)}
+ html[data-app-mode='web'] .web-bible-study>section:last-child{border-bottom:0}
+ html[data-app-mode='web'] .web-bible-study h3{margin:10px 0;color:var(--ink);font-size:16px}
+ html[data-app-mode='web'] .web-bible-study p{color:var(--muted);font-size:11px;line-height:1.7}
+ html[data-app-mode='web'] .web-study-count{display:flex;align-items:center;gap:11px;margin-top:15px;color:var(--muted);font-size:11px}
+ html[data-app-mode='web'] .web-study-count svg{color:var(--gold-ink)}
+ html[data-app-mode='web'] .web-study-count b{color:var(--ink);font-size:13px}
+ html[data-app-mode='web'] .web-selected-verse button{display:flex;align-items:center;gap:8px;width:100%;min-height:40px;margin-top:8px;padding:8px 10px;border:1px solid var(--line);border-radius:8px;color:var(--navy);font-size:11px}
+ html[data-app-mode='web'] .web-selected-verse button:hover{background:var(--blue-light)}
+ html[data-app-mode='web'] .web-study-tip>svg{color:var(--navy)}
+ html[data-app-mode='web'] .bibleapp>.readerfooter{max-width:1220px}
+}
+@media(min-width:1050px) and (max-width:1240px){html[data-app-mode='web'] .readerlayout.compactreader.web-bible-layout{grid-template-columns:145px minmax(520px,1fr) 230px;gap:16px;padding-inline:18px}html[data-app-mode='web'] .web-bible-layout .verses{padding-inline:34px}html[data-app-mode='web'] .web-bible-study>section{padding:16px}}
