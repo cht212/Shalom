@@ -4,3 +4,5 @@
 @media(max-width:359px){.bible-navigation{padding:12px}.bible-finder-steps{gap:2px}.bible-finder-steps button{padding-inline:6px;font-size:11px}.bible-number-grid{grid-template-columns:repeat(5,minmax(0,1fr))}.bible-reference-controls>button{padding:9px 7px}.bible-reference-controls>button>span{font-size:10px}}
 
 html[data-theme=dark] .bible-reference-search input{background:transparent}
+
+@media(max-width:649px){.bible-finder[open]{position:fixed;left:0;right:0;bottom:0;max-height:var(--finder-height,92dvh);margin:0 auto}.bible-reference-search input{font-size:16px}.bible-finder-content{padding-bottom:28px}}

@@ -3,6 +3,7 @@ import {ArrowRight,BookOpen,LayoutDashboard,LogOut,PenLine,ShieldCheck,UserRound
 import ProfileNavigation from '../profile-navigation';
 import ProfileWorkspace from '../profile-workspace';
 import ProfileQrGenerator from '../profile-qr-generator';
+import BiblePreferences from '../bible-preferences';
 import {requireShalomUser} from '../auth';
 import {actor,state} from '../../lib/server';
 import {canAccessPanel,roleNames,visibleCells} from '../../lib/access';
@@ -37,6 +38,7 @@ export default async function Profile(){
     {a.role==='pending'&&<div className="notice neutral">El administrador debe asignarte un rol y una célula para activar las opciones de tu cuenta.</div>}
    </section>
    <ProfileWorkspace/>
+   <BiblePreferences/>
    {canGenerateRegistration&&<ProfileQrGenerator cells={registrationCells}/>}
    <div className="profilelinks">
     {canAccessPanel(a.role)&&<Link className="panel" href="/panel">

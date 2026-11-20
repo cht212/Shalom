@@ -4,6 +4,7 @@ import {usePathname} from 'next/navigation';
 import DownloadManager from './download-manager';
 import {isOnline,useOnline} from './use-online';
 import {OfflineMessage} from './online-only';
+import AppSplash from './app-splash';
 
 type InstallEvent=Event&{prompt:()=>Promise<void>;userChoice:Promise<{outcome:'accepted'|'dismissed'}>};
 export default function PwaRuntime({children}:{children:React.ReactNode}){
@@ -60,13 +61,15 @@ export default function PwaRuntime({children}:{children:React.ReactNode}){
  }
  const privateSection=pathname!=='/'&&pathname!=='/offline';
  return <>
+  <AppSplash/>
   {!online&&<div className="pwa-banner" role="status">Sin conexión · Biblia y guardados disponibles en este dispositivo. Los formularios necesitan internet.</div>}
+  {!installed&&ios&&<div className="pwa-install-banner" role="status"><div><strong>Instala Shalom en tu iPhone</strong><span>Así aparecerá como una app en tu pantalla de inicio.</span></div><button className="primary" onClick={requestInstall}>Ver cómo instalar</button></div>}
   {update&&<div className="pwa-banner" role="status">Hay una actualización disponible <button className="outline" onClick={()=>{if(registration?.waiting){applying.current=true;registration.waiting.postMessage({type:'APPLY_UPDATE'})}}}>Actualizar ahora</button><small>La aplicación se recargará. Termina tus formularios antes de actualizar.</small></div>}
   {!online&&privateSection?<main><OfflineMessage/></main>:children}
   <div className="pwa-tools">
    {!installed&&(ios||install)&&<button className="textbtn" onClick={requestInstall}>Instalar Shalom</button>}
    <button className="textbtn" onClick={()=>{setDownloadsOpen(true);dialog.current?.showModal()}}>Administrar descargas</button>
-   {iosHelp&&<p role="status">En Safari: Compartir → Agregar a pantalla de inicio → Agregar.</p>}
+   {iosHelp&&<p className="ios-install-help" role="status">En Safari toca <b>Compartir</b> → <b>Agregar a pantalla de inicio</b> → <b>Agregar</b>. Después abre Shalom desde el nuevo ícono.</p>}
    {notice&&<p role="status">{notice}</p>}
   </div>
   <dialog ref={dialog} className="pwa-dialog" aria-labelledby="pwa-download-title" onClose={()=>setDownloadsOpen(false)}><div className="pwa-dialog-header"><h2 id="pwa-download-title">Shalom sin conexión</h2><button className="outline" onClick={()=>dialog.current?.close()} aria-label="Cerrar descargas">Cerrar</button></div>{downloadsOpen&&<DownloadManager/>}</dialog>

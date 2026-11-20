@@ -2,5 +2,5 @@
 import Link from 'next/link';
 import Image from 'next/image';
 export default function Brand({className='readerbrand'}:{className?:string}){
- return <Link className={className+' shalom-brand'} href="/" aria-label="Shalom Christian Church · Inicio"><Image src="/branding/emblema-shalom.png" alt="" aria-hidden="true" className="shalom-emblem" width={1248} height={1248} sizes="48px" priority/><span className="brand-wordmark">SHALOM{' '}<small>CHRISTIAN CHURCH</small></span></Link>
+ return <Link className={className+' shalom-brand'} href="/" aria-label="Iglesia Shalom · Inicio"><Image src="/branding/shalom-icon.png" alt="" aria-hidden="true" className="shalom-emblem" width={1024} height={1024} sizes="48px" priority/><span className="brand-wordmark">SHALOM{' '}<small>IGLESIA</small></span></Link>
 }
