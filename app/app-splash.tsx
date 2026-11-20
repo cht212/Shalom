@@ -12,5 +12,5 @@ export default function AppSplash(){
   return()=>{window.removeEventListener('load',finish);window.clearTimeout(fallback)};
  },[]);
  if(!visible)return null;
- return <div className="app-splash" role="status" aria-label="Cargando Shalom"><img src="/branding/shalom-icon.png" alt="Shalom"/><span>Preparando tu lectura</span><i/></div>;
+ return <div className="app-splash" role="status" aria-label="Cargando Shalom"><img src="/branding/shalom-app-icon.png" alt="Shalom"/><span>Preparando tu lectura</span><i/></div>;
 }
