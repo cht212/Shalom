@@ -1,8 +1,10 @@
 'use client';
-import {useEffect,useRef} from 'react';
-import type {LucideIcon} from 'lucide-react';
+import {useEffect,useRef,useState} from 'react';
+import {Ellipsis,X,type LucideIcon} from 'lucide-react';
 export default function PanelSections({items,current,onSelect,label}:{items:{id:string;label:string;short?:string;icon:LucideIcon}[];current:string;onSelect:(id:string)=>void;label:string}){
- const ref=useRef<HTMLElement>(null);
- useEffect(()=>{const nav=ref.current,selected=nav?.querySelector<HTMLElement>('[aria-current]');if(nav&&selected)nav.scrollTo({left:selected.offsetLeft-nav.offsetLeft-nav.clientWidth/2+selected.offsetWidth/2,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})},[current]);
- return <nav ref={ref} className="panel-section-nav" aria-label={label}>{items.map(item=><button key={item.id} aria-current={current===item.id?'page':undefined} onClick={()=>onSelect(item.id)}><item.icon size={16}/>{item.short||item.label}</button>)}</nav>;
+ const ref=useRef<HTMLElement>(null),dialog=useRef<HTMLDialogElement>(null),[moreOpen,setMoreOpen]=useState(false);
+ const visible=items.length>5?items.slice(0,4):items,overflow=items.length>5?items.slice(4):[];
+ useEffect(()=>{const nav=ref.current;if(!nav)return;const measure=()=>document.documentElement.style.setProperty('--reader-nav-height',Math.ceil(nav.getBoundingClientRect().height)+'px');const observer=new ResizeObserver(measure);measure();observer.observe(nav);return()=>{observer.disconnect();document.documentElement.style.removeProperty('--reader-nav-height')}},[]);
+ function select(id:string){dialog.current?.close();onSelect(id);window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth'})}
+ return <><nav ref={ref} className="management-nav" aria-label={label}><div className="management-nav-items">{visible.map(item=><button key={item.id} aria-current={current===item.id?'page':undefined} onClick={()=>select(item.id)}><item.icon size={20}/><span>{item.short||item.label}</span></button>)}{overflow.length>0&&<button className={overflow.some(item=>item.id===current)?'current':''} aria-label="Más secciones" aria-expanded={moreOpen} onClick={()=>{dialog.current?.showModal();setMoreOpen(true)}}><Ellipsis size={20}/><span>Más</span></button>}</div></nav><dialog ref={dialog} className="management-more" aria-labelledby="management-more-title" onClose={()=>setMoreOpen(false)} onClick={e=>{if(e.target===dialog.current)dialog.current.close()}}><div className="management-more-heading"><h2 id="management-more-title">Más opciones</h2><button aria-label="Cerrar más opciones" onClick={()=>dialog.current?.close()}><X size={20}/></button></div>{overflow.map(item=><button className="management-more-item" key={item.id} aria-current={current===item.id?'page':undefined} onClick={()=>select(item.id)}><item.icon size={20}/>{item.label}</button>)}</dialog></>;
 }

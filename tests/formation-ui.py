@@ -42,13 +42,13 @@ with sync_playwright() as p:
     page.route('**/api/study', lambda route: route.fulfill(status=401, json={'error': 'Fixture without cloud sync'}))
     page.goto('http://localhost:3700', wait_until='domcontentloaded')
     page.locator('.formation-book h3').wait_for()
-    assert page.locator('.formation-book h3').inner_text() == 'Discipulado 1'
-    assert page.locator('.formation-book p').count() == 0
-    page.screenshot(path=str(output / 'assigned-mobile.png'))
+    page.locator('.home-verse').wait_for()
+    assert page.locator('.formation-book,.formation-section').count() == 0
+    page.screenshot(path=str(output / 'signed-in-mobile.png'))
     page.close()
     page = browser.new_page()
     response = page.request.get('http://localhost:3700/api/formation')
     assert response.status == 401, response.status
     browser.close()
-print('PASS: guest privacy, assigned-book UI, 4 sizes, both themes, no overflow, API authentication')
+print('PASS: deferred book UI, 4 sizes, both themes, no overflow, API authentication')
 print(output)

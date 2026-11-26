@@ -2,8 +2,7 @@
 
 import {useEffect,useState} from 'react';
 import Link from 'next/link';
-import {ArrowRight,ShieldCheck,Sunrise} from 'lucide-react';
-import AssignedBooks from './assigned-books';
+import {ArrowRight,LayoutDashboard,Sunrise} from 'lucide-react';
 import {readBibleBook} from '../lib/bible-client';
 import type {Actor} from '../lib/access';
 import books from '../public/bible/books.json';
@@ -20,17 +19,16 @@ export default function DailyHome({onRead,actor}:{onRead:(book:string,chapter:nu
  const reference=verse?`${books.find(b=>b.id===verse.book)?.name} ${verse.chapter}:${verse.verse}`:'';
  const canReview=!!actor&&reviewers.includes(actor.role);
  const firstName=actor?.name.trim().split(/\s+/)[0];
- return <section className="home-dashboard" aria-labelledby="home-title">
-  <header className="home-welcome">
-   <div><span className="eyebrow">MISIÓN CRISTIANA SHALOM</span><h1 id="home-title">{firstName?`Hola, ${firstName}.`:'Crezcamos juntos.'}</h1><p>Una palabra para hoy y tu camino de formación en un solo lugar.</p></div>
-   {canReview&&<Link className="home-review-link" href="/panel?tab=discipulado"><ShieldCheck size={17}/><span>Revisar formación</span><ArrowRight size={16}/></Link>}
-  </header>
+ return <section className={'home-dashboard'+(!actor?' guest-home':'')} aria-labelledby="home-title">
+  {actor?<header className="home-welcome">
+   <div><h1 id="home-title">Hola, {firstName}.</h1></div>
+   {canReview&&<Link className="home-review-link" href="/panel"><LayoutDashboard size={17}/><span>Mi panel</span><ArrowRight size={16}/></Link>}
+  </header>:<h1 id="home-title" className="sr-only">Versículo del día</h1>}
 
   <button className="home-verse" onClick={()=>verse&&onRead(verse.book,verse.chapter)} disabled={!verse} aria-label={verse?`Leer ${reference}`:'Cargando versículo del día'}>
    <span className="home-verse-label"><Sunrise size={17}/> Versículo del día <time dateTime={date}>{new Date(date+'T12:00:00').toLocaleDateString('es-PE',{day:'numeric',month:'short'})}</time></span>
    {error?<span className="home-verse-error" role="alert">{error}</span>:verse?<><q>{verse.text}</q><span className="home-verse-reference">{reference}<ArrowRight size={16}/></span></>:<span className="home-verse-loading">Preparando la lectura de hoy…</span>}
   </button>
 
-  {actor&&actor.role!=='pending'&&<AssignedBooks key={actor.id} actor={actor}/>}
  </section>;
 }

@@ -10,7 +10,7 @@ export default async function Panel({searchParams}:{searchParams:Promise<{tab?:s
  const a=await actor();if(!a)return null;
  if(!canAccessPanel(a.role))redirect(a.role==='disciple'?'/?view=devocional':'/perfil');
  const requested=(await searchParams).tab||'inicio';
- const allowed=a.role==='admin'?['inicio','celulas','personas','informes','devocionales','discipulado','cuentas']:['inicio','devocionales','discipulado','personas','informes'];
+ const allowed=a.role==='admin'?['inicio','celulas','personas','informes','devocionales','cuentas']:['inicio','devocionales','personas','informes'];
  const initialTab=allowed.includes(requested)?requested:'inicio';
  return a.role==='admin'?<Dashboard actor={a} initialPage={initialTab}/>:<RolePanel actor={a} initialTab={initialTab}/>;
 }

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import {ArrowRight,BookOpen,LayoutDashboard,LogOut,PenLine,ShieldCheck,UserRound} from 'lucide-react';
+import {ArrowRight,BookOpen,LayoutDashboard,LibraryBig,LogOut,PenLine,ShieldCheck,UserRound} from 'lucide-react';
 import ProfileNavigation from '../profile-navigation';
 import ProfileWorkspace from '../profile-workspace';
 import ProfileQrGenerator from '../profile-qr-generator';
@@ -38,6 +38,7 @@ export default async function Profile(){
     {a.role==='pending'&&<div className="notice neutral">El administrador debe asignarte un rol y una célula para activar las opciones de tu cuenta.</div>}
    </section>
    <ProfileWorkspace/>
+   {a.role==='admin'&&<section className="panel admin-books-placeholder" aria-labelledby="admin-books-title"><LibraryBig size={22}/><div><h2 id="admin-books-title">Libros de discipulado</h2><p>Pendiente del material de estudio.</p></div><span>Próximamente</span></section>}
    <BiblePreferences/>
    {canGenerateRegistration&&<ProfileQrGenerator cells={registrationCells}/>}
    <div className="profilelinks">

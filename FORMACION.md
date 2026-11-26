@@ -1,5 +1,11 @@
 # Libros de formación
 
+## Estado actual: función pospuesta
+
+`FORMATION_ENABLED` está desactivado en `lib/features.ts`. Por petición del usuario, por ahora solo se muestra un marcador “Próximamente” en el perfil del administrador. No hay biblioteca en Inicio, opciones de libros en los paneles, cargas, asignaciones ni acceso a libros mediante enlaces antiguos. Las APIs autenticadas responden con función no habilitada; no se eliminan datos existentes.
+
+El flujo descrito a continuación está reservado para cuando el usuario entregue el PDF oficial y pida preparar su contenido interactivo. No debe activarse antes de ese momento.
+
 La biblioteca de Inicio solo aparece con una sesión confirmada. Cada cuenta ve los libros asignados a su persona o a su cuenta de líder. Las tarjetas contienen portada y título; los filtros separan libros por completar y completados.
 
 ## Preparar y publicar un libro

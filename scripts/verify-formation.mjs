@@ -3,6 +3,7 @@ import {existsSync} from 'node:fs';
 import {spawn} from 'node:child_process';
 import {randomBytes,randomUUID,pbkdf2Sync} from 'node:crypto';
 import postgres from 'postgres';
+import {FORMATION_ENABLED} from '../lib/features.ts';
 
 if(existsSync('.env.local'))process.loadEnvFile('.env.local');
 const url=process.env.DATABASE_URL;
@@ -37,11 +38,17 @@ try{
   await isolated`INSERT INTO accounts (id,email,name,role,cell,person,active) VALUES (${id},${id+'@example.invalid'},${id},'disciple',${cell},${person},1)`;
   await isolated`INSERT INTO credentials (account,username,salt,hash,must_change) VALUES (${id},${id},${salt},${hash},0)`;
  }
+ for(const [id,role]of [['verification-sector-account','sector_leader'],['verification-pastor-account','pastor']]){
+  const sector=data.cells.find(c=>c.id===leader.cell)?.sector??null;
+  const salt=randomBytes(32).toString('hex'),hash=pbkdf2Sync(password,salt,100000,32,'sha256').toString('hex');
+  await isolated`INSERT INTO accounts (id,email,name,role,sector,active) VALUES (${id},${id+'@example.invalid'},${id},${role},${sector},1)`;
+  await isolated`INSERT INTO credentials (account,username,salt,hash,must_change) VALUES (${id},${id},${salt},${hash},0)`;
+ }
  console.log('Isolated test schema ready; production records unchanged.');
  server=spawn(process.execPath,['node_modules/next/dist/bin/next','start','--port','3700'],{env:{...process.env,DATABASE_URL:direct.toString(),APP_URL:'http://localhost:3700'},stdio:['ignore','ignore','ignore'],windowsHide:true});
  let ready=false;for(let attempt=0;attempt<40;attempt++){try{const r=await fetch('http://localhost:3700/ingresar');if(r.ok){ready=true;break}}catch{}await new Promise(r=>setTimeout(r,500))}
  if(!ready)throw Error('Test server unavailable');
- const child=spawn('python',['tests/formation-workflow.py'],{env:{...process.env,SHALOM_TEST_MEMBER_PASSWORD:password,SHALOM_TEST_LEADER_ID:leader.id,SHALOM_TEST_MEMBER_ID:memberId,SHALOM_TEST_OUTSIDE_ID:outsideId},stdio:'inherit',windowsHide:true});
+ const child=spawn('python',[FORMATION_ENABLED?'tests/formation-workflow.py':'tests/management-workflow.py'],{env:{...process.env,SHALOM_TEST_MEMBER_PASSWORD:password,SHALOM_TEST_LEADER_ID:leader.id,SHALOM_TEST_MEMBER_ID:memberId,SHALOM_TEST_OUTSIDE_ID:outsideId},stdio:'inherit',windowsHide:true});
  const code=await new Promise(resolve=>child.on('exit',resolve));if(code!==0)throw Error('Formation workflow failed');
 }catch(error){console.error('Verification failed:',error.code||error.message);process.exitCode=1}
 finally{

@@ -1,8 +1,10 @@
 import {actor,state,db,json,denied,unauth} from './server';
 import {type FormationAccount,type FormationState} from './formation';
+import {FORMATION_ENABLED} from './features';
 
 export async function formationContext(){
  const a=await actor();if(!a)return {response:unauth()} as const;if(a.role==='pending')return {response:denied()} as const;
+ if(!FORMATION_ENABLED)return {response:json({error:'Los libros de discipulado todavía no están habilitados.'},503)} as const;
  const {data}=await state();
  const row=await db().prepare('SELECT data,revision FROM church WHERE id=?').bind('formation').first<{data:string;revision:number}>();
  const formation:FormationState=row?JSON.parse(row.data):{assignments:[]};
