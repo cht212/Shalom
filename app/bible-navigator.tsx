@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useId,useRef,useState} from 'react';
+import {forwardRef,useEffect,useId,useImperativeHandle,useRef,useState} from 'react';
 import {BookOpen,ChevronDown,ChevronRight,Search,X} from 'lucide-react';
 import books from '../public/bible/books.json';
 import {readBibleBook,type Verse} from '../lib/bible-client';
@@ -8,7 +8,8 @@ import {isOnline} from './use-online';
 import './bible-navigator.css';
 
 type Step='books'|'chapters'|'verses';
-export default function BibleNavigator({book,chapter,verse,disabled,onNavigate}:{book:string;chapter:number;verse:string;disabled:boolean;onNavigate:(book:string,chapter:number,verse?:string)=>void}){
+export type BibleNavigatorHandle={openSearch:()=>void};
+const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number;verse:string;disabled:boolean;onNavigate:(book:string,chapter:number,verse?:string)=>void}>(function BibleNavigator({book,chapter,verse,disabled,onNavigate},ref){
  const current=books.find(item=>item.id===book)!;
  const [step,setStep]=useState<Step>('books'),[chosenBook,setChosenBook]=useState(book),[chosenChapter,setChosenChapter]=useState(chapter),[query,setQuery]=useState(''),[testament,setTestament]=useState<'all'|'old'|'new'>('all'),[availableVerses,setAvailableVerses]=useState<Verse[]>([]),[loading,setLoading]=useState(false),[error,setError]=useState('');
  const dialog=useRef<HTMLDialogElement>(null),input=useRef<HTMLInputElement>(null),controller=useRef<AbortController|null>(null),oldOverflow=useRef(''),scrollLocked=useRef(false);
@@ -35,6 +36,7 @@ export default function BibleNavigator({book,chapter,verse,disabled,onNavigate}:
   if(focusSearch)input.current?.focus();
   if(next==='verses')void loadVerses(book,chapter);else setLoading(false);
  }
+ useImperativeHandle(ref,()=>({openSearch:()=>open('books',true)}));
  function chooseBook(id:string){controller.current?.abort();setChosenBook(id);setChosenChapter(id===book?chapter:1);setQuery('');setError('');setStep('chapters');setAvailableVerses([]);setLoading(false)}
  async function loadVerses(id:string,number:number){
   controller.current?.abort();const request=new AbortController();controller.current=request;
@@ -61,7 +63,6 @@ export default function BibleNavigator({book,chapter,verse,disabled,onNavigate}:
  function resultLabel(match:BibleReferenceMatch){return match.book.name+(match.chapter?' '+match.chapter:'')+(match.verse?':'+match.verse:'')}
  const bookSections=[{id:'old',title:'Antiguo Testamento',entries:books.slice(0,39)},{id:'new',title:'Nuevo Testamento',entries:books.slice(39)}];
  return <div className="bible-navigation">
-  <button type="button" className="bible-search-trigger" disabled={disabled} onClick={()=>open('books',true)} aria-haspopup="dialog"><Search size={19}/><span>Buscar libro o referencia</span><small>Juan 3:16</small></button>
   <div className="bible-reference-controls"><button type="button" disabled={disabled} onClick={()=>open('books')} aria-label={'Libro: '+current.name} aria-haspopup="dialog"><span>Libro</span><b>{current.name}</b><ChevronDown size={16}/></button><button type="button" disabled={disabled} onClick={()=>open('chapters')} aria-label={'Capítulo: '+chapter} aria-haspopup="dialog"><span>Capítulo</span><b>{chapter}</b><ChevronDown size={16}/></button><button type="button" disabled={disabled} onClick={()=>open('verses')} aria-label={'Versículo: '+(verse||'Elegir')} aria-haspopup="dialog"><span>Versículo</span><b>{verse||'Elegir'}</b><ChevronDown size={16}/></button></div>
   <dialog ref={dialog} className="bible-finder" aria-labelledby={titleId} onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close()}}} onClick={event=>{if(event.target===dialog.current)close()}} onClose={()=>{if(!dialog.current?.open){controller.current?.abort();if(scrollLocked.current){document.documentElement.style.overflow=oldOverflow.current;scrollLocked.current=false}}}}>
    <div className="bible-finder-heading"><div><span className="eyebrow">REINA-VALERA 1909</span><h2 id={titleId}>Encuentra tu lectura</h2></div><button type="button" className="bible-finder-close" autoFocus onClick={close} aria-label="Cerrar buscador de Biblia"><X size={22}/></button></div>
@@ -79,4 +80,5 @@ export default function BibleNavigator({book,chapter,verse,disabled,onNavigate}:
    {!query&&step!=='books'&&<div className="bible-finder-footer"><button type="button" className="primary" disabled={disabled||loading} onClick={()=>go(chosenBook,chosenChapter)}>Leer capítulo completo <ChevronRight size={18}/></button></div>}
   </dialog>
  </div>;
-}
+});
+export default BibleNavigator;

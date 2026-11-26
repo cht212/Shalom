@@ -23,7 +23,7 @@ function worker(){
 }
 test('private APIs, mutations, RSC and other origins always bypass the worker',()=>{
  const {handlers}=worker();
- const paths=['/api/session','/api/study','/api/profile','/api/auth/login','/api/narration?book=PSA&chapter=23','/api/accounts','/api/attendance','/api/devotions/transcribe','/api/devotions/private-id/audio'];
+ const paths=['/api/session','/api/study','/api/profile','/api/auth/login','/api/accounts','/api/attendance','/api/devotions/transcribe','/api/devotions/private-id/audio'];
  for(const path of paths)handlers.fetch({request:new Request('https://shalom.test'+path),respondWith(){assert.fail(path+' must not be intercepted')}});
  for(const method of ['POST','PUT','PATCH','DELETE','HEAD'])handlers.fetch({request:new Request('https://shalom.test/bible/PSA.json',{method}),respondWith(){assert.fail(method+' must be network-only')}});
  for(const headers of [{RSC:'1'},{'Next-Router-Prefetch':'1'}])handlers.fetch({request:new Request('https://shalom.test/',{headers}),respondWith(){assert.fail('RSC must be network-only')}});

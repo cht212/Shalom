@@ -6,7 +6,7 @@ Aplicación para lectura pública de la Biblia, devocionales personales y organi
 
 Desde `C:\Users\User\Documents\Shalom\shalom-web`, ejecuta `npm run dev` y abre la dirección de la terminal. Inicia sesión en `/ingresar` con un usuario y contraseña de Shalom.
 
-Las cinco cuentas locales de prueba están en `.sites-runtime/USUARIOS_PRUEBA.txt`. Ese archivo es privado, no se publica ni se incluye en Git. Usa contraseñas nuevas para personas reales. El administrador entrega las cuentas desde Panel → Accesos y roles. Primero registra la persona y después vincúlala a una cuenta.
+El administrador entrega y actualiza las cuentas desde Panel → Accesos y roles. Primero registra la persona y después vincúlala a una cuenta. Las contraseñas no se guardan en archivos del proyecto.
 
 ## Funcionamiento
 
@@ -18,7 +18,7 @@ Informes prepara las seis tablas de `FORMATOScd.docx`, ubicado en la carpeta sup
 
 ## Alojamiento y datos
 
-El servidor utiliza Vinext/Cloudflare Workers y D1, también en desarrollo local. Otro hosting puede requerir adaptar el servidor y la base de datos; no basta con copiar el código a un hosting PHP o estático. El inicio de sesión utiliza cookies HttpOnly, contraseñas con PBKDF2 y salt individual, y validación de permisos en el servidor. Conserva copias de los datos antes de migrar.
+El servidor utiliza Next.js en Vercel y PostgreSQL en Neon. Otro hosting puede requerir adaptar el servidor y la base de datos; no basta con copiar el código a un hosting PHP o estático. El inicio de sesión utiliza cookies HttpOnly, contraseñas con PBKDF2 y salt individual, y validación de permisos en el servidor. Conserva copias de los datos antes de migrar.
 
 La Biblia Reina-Valera 1909 está incluida localmente. La voz neuronal usa un servicio Python: consulta `scripts/VOICE.md` para instalarlo y alojarlo.
 

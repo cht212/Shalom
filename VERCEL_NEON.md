@@ -12,8 +12,7 @@ En **Project → Settings → Environment Variables**, agrega los nombres de `en
 
 - `DATABASE_URL`: cadena pooled de Neon.
 - `APP_URL`: URL pública estable de producción, por ejemplo `https://tu-dominio-principal`. Se usa como base de los QR; no configures aquí un dominio de preview o deployment.
-- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`: valo![alt text](image.png)res de Cloudinary.
-- `NARRATION_ORIGIN`: URL HTTPS donde estén publicados los WAV, con la estructura
+- `CLOUDINARY_CLOUD_NAME`, `CLOUDINARY_API_KEY`, `CLOUDINARY_API_SECRET`: valores de Cloudinary.
   `audio/LIBRO/CAPITULO.wav`. Para producción se recomienda un almacenamiento público
   como Vercel Blob. Si no se configura, la Biblia usa automáticamente la voz en español
   disponible en el teléfono o navegador.

@@ -57,22 +57,14 @@ La barra de lectura incluye búsqueda por nombre o referencia y tres controles: 
 
 La búsqueda reconoce nombres, abreviaturas y referencias en el dispositivo. Los capítulos se validan con el catálogo y los versículos con el texto real del libro antes de abrir una referencia. Para leer sin internet se necesita tener descargado ese libro. No requiere un servicio de IA.
 
-## Audio
-
-La grabación personal de devocionales es una función distinta del audio de la Biblia. Su configuración, envío opcional y permisos están descritos en [DEVOCIONAL_VOZ.md](DEVOCIONAL_VOZ.md); sus archivos privados permanecen exclusivamente en red.
-
-Se conserva `/api/narration` y el respaldo de SpeechSynthesis. «Descargar capítulo» solo se habilita cuando se pudo cargar audio alojado. Se valida una respuesta completa de tipo `audio/*` antes de almacenarla; las respuestas de API no se guardan en la caché del worker. Para reproducir una descarga se crea una URL Blob local, sin pedir nuevamente el audio a la nube.
-
-Si `NARRATION_ORIGIN` no está configurado, el botón explica que falta audio alojado y el respaldo actual continúa disponible. La voz del dispositivo no garantiza funcionamiento sin internet.
-
 ## Actualizaciones
 
-Un worker nuevo queda esperando. «Hay una actualización disponible» permite aplicarlo; antes se avisa que la página se recargará y deben terminarse los formularios. Solo se eliminan cachés antiguas de la interfaz. Biblia, audio y guardados locales tienen almacenamiento independiente y se conservan.
+Un worker nuevo queda esperando. «Hay una actualización disponible» permite aplicarlo; antes se avisa que la página se recargará y deben terminarse los formularios. Solo se eliminan cachés antiguas de la interfaz. La Biblia y los guardados locales se conservan.
 
 ## Verificaciones
 
 - Pruebas Node de exclusión de API/mutaciones/RSC, precarga anónima, activación controlada y conservación de descargas al actualizar: `tests/pwa.mjs`, incluidas en `npm run check`.
-- Comprobación en Chromium de producción local: manifest sin errores de instalación; primera lectura; descarga completa; recarga y enlaces a capítulos offline; marcadores de invitado; pantalla offline de Perfil; audio de prueba descargado y reproducido desde Blob; actualización con conservación de datos.
+- Comprobación en Chromium de producción local: manifest sin errores de instalación; primera lectura; descarga completa; recarga y enlaces a capítulos offline; marcadores de invitado; pantalla offline de Perfil; actualización con conservación de datos.
 - Cuenta simulada: copia local tras reiniciar sin internet, sincronización al reconectar, conflicto de revisión sin sobrescribir la nube. Las pruebas usan respuestas simuladas y no escriben en Neon.
 - Emulación móvil: instrucciones de iPhone y ocultación del botón después de instalar. Las pruebas automatizadas no sustituyen la instalación en teléfonos físicos.
 - Lighthouse actual evalúa rendimiento, accesibilidad, buenas prácticas y SEO; la categoría PWA fue retirada. La instalación y el modo offline se comprueban por separado. Los informes locales se encuentran en `.sites-runtime/lighthouse-pwa-final.report.html` y `.json`.

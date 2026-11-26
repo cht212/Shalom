@@ -39,14 +39,9 @@
   ],
   "exclude": [
     "node_modules",
-    "examples",
     "dist",
-    ".vinext",
-    ".wrangler",
     ".sites-runtime",
     "outputs",
-    "work",
-    "worker",
-    "cloudflare-env.d.ts"
+    "work"
   ]
 }
