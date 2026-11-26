@@ -57,6 +57,10 @@ La barra de lectura incluye búsqueda por nombre o referencia y tres controles: 
 
 La búsqueda reconoce nombres, abreviaturas y referencias en el dispositivo. Los capítulos se validan con el catálogo y los versículos con el texto real del libro antes de abrir una referencia. Para leer sin internet se necesita tener descargado ese libro. No requiere un servicio de IA.
 
+## Versiones bíblicas
+
+El lector incluye Biblia en Español Sencillo 2026 como versión actual predeterminada y Reina-Valera 1909 como versión histórica. Ambas permiten redistribución y lectura offline. Español Sencillo 2026 se importa desde eBible.org y se acredita a AudioBiblia.org / Irma Flores; el texto fuente está identificado como dominio público.
+
 ## Actualizaciones
 
 Un worker nuevo queda esperando. «Hay una actualización disponible» permite aplicarlo; antes se avisa que la página se recargará y deben terminarse los formularios. Solo se eliminan cachés antiguas de la interfaz. La Biblia y los guardados locales se conservan.

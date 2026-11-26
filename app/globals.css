@@ -81,6 +81,7 @@ html[data-theme=dark] .church-word-section{background:#191d21}html[data-theme=da
 .readerheader{position:sticky;top:0;z-index:50;background:var(--surface);backdrop-filter:none;box-shadow:0 1px 0 var(--line)}
 .header-bible-search{display:flex;align-items:center;gap:8px;min-height:40px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--navy);font-size:12px;font-weight:700}
 .header-bible-search:hover{background:var(--blue-light)}
+.translation-picker{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px}.translation-picker select{min-height:38px;max-width:220px;padding:7px 28px 7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font-size:12px}
 .web-bible-layout{grid-template-columns:minmax(0,780px) minmax(220px,270px)!important;max-width:1100px!important;justify-content:center}
 .web-bible-layout>.readerpaper{grid-column:1}.web-bible-study{grid-column:2}
 html[data-app-mode='web'] .web-bible-layout .chapterheading h2{font-size:34px}
@@ -95,6 +96,7 @@ html[data-app-mode='web'] .web-bible-layout .bible-navigation{grid-template-colu
  html,body,.bibleapp{overflow-x:clip}
  .header-bible-search{width:40px;min-width:40px;padding:0;justify-content:center}
  .header-bible-search span{display:none}
+ .translation-picker span{display:none}.translation-picker select{max-width:180px}
  .church-hero{padding:32px 0 45px;gap:28px}
  .church-hero h1{font-size:clamp(34px,10vw,40px);line-height:1.06;letter-spacing:-1.8px}
  .church-hero-art{min-height:280px}

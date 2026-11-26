@@ -1,16 +1,13 @@
 'use client';
 
-import {useState} from 'react';
-
-const STORAGE_KEY='shalom-bible-version';
-const versions=[{id:'rv1909',name:'Reina-Valera 1909',description:'Texto local y disponible sin conexión.'}];
-
+import {BIBLE_VERSIONS,type BibleVersion} from '../lib/bible-versions';
+import {saveBibleVersion,useBibleVersion} from './use-bible-version';
 export default function BiblePreferences(){
- const [version,setVersion]=useState('rv1909');
- function change(next:string){setVersion(next);try{localStorage.setItem(STORAGE_KEY,next);window.dispatchEvent(new CustomEvent('shalom-bible-version-change',{detail:next}))}catch{}}
+ const version=useBibleVersion();
+ function change(next:string){saveBibleVersion(next as BibleVersion)}
  return <section className="panel profileedit bible-preferences">
   <div><span className="eyebrow">LECTURA</span><h2>Preferencias de Biblia</h2><p>Elige la versión que quieres usar al leer y estudiar.</p></div>
-  <label>Versión bíblica<select value={version} onChange={event=>change(event.target.value)}>{versions.map(item=><option key={item.id} value={item.id}>{item.name}</option>)}<option disabled>Otras versiones · próximamente</option></select></label>
-  <small>{versions.find(item=>item.id===version)?.description} Las nuevas versiones aparecerán aquí cuando estén disponibles para lectura sin conexión.</small>
+  <label>Versión bíblica<select value={version} onChange={event=>change(event.target.value)}>{BIBLE_VERSIONS.map(item=><option key={item.id} value={item.id}>{item.name}</option>)}</select></label>
+  <small>{BIBLE_VERSIONS.find(item=>item.id===version)?.description}. Ambas versiones están disponibles para lectura sin conexión.</small>
  </section>;
 }

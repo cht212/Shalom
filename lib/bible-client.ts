@@ -1,8 +1,9 @@
 import {BIBLE_CACHE} from './offline-downloads';
+import {DEFAULT_BIBLE_VERSION,type BibleVersion} from './bible-versions';
 export type Verse={verse:string;text:string};
-export async function readBibleBook(book:string,signal?:AbortSignal):Promise<Record<string,Verse[]>>{
+export async function readBibleBook(book:string,signal?:AbortSignal,version:BibleVersion=DEFAULT_BIBLE_VERSION):Promise<Record<string,Verse[]>>{
  if(!/^[A-Z0-9]{3}$/.test(book))throw Error('Libro inválido.');
- const path='/bible/'+book+'.json';
+ const path=version==='bes'?'/bible/bes/'+book+'.json':'/bible/'+book+'.json';
  let cache:Cache|undefined;
  try{if('caches'in window)cache=await caches.open(BIBLE_CACHE)}catch{}
  const saved=await cache?.match(path);

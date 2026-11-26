@@ -5,11 +5,12 @@ import books from '../public/bible/books.json';
 import {readBibleBook,type Verse} from '../lib/bible-client';
 import {searchBibleReferences,type BibleReferenceMatch} from '../lib/bible-reference';
 import {isOnline} from './use-online';
+import {BIBLE_VERSIONS,type BibleVersion} from '../lib/bible-versions';
 import './bible-navigator.css';
 
 type Step='books'|'chapters'|'verses';
 export type BibleNavigatorHandle={openSearch:()=>void};
-const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number;verse:string;disabled:boolean;onNavigate:(book:string,chapter:number,verse?:string)=>void}>(function BibleNavigator({book,chapter,verse,disabled,onNavigate},ref){
+const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number;verse:string;version:BibleVersion;disabled:boolean;onNavigate:(book:string,chapter:number,verse?:string)=>void}>(function BibleNavigator({book,chapter,verse,version,disabled,onNavigate},ref){
  const current=books.find(item=>item.id===book)!;
  const [step,setStep]=useState<Step>('books'),[chosenBook,setChosenBook]=useState(book),[chosenChapter,setChosenChapter]=useState(chapter),[query,setQuery]=useState(''),[testament,setTestament]=useState<'all'|'old'|'new'>('all'),[availableVerses,setAvailableVerses]=useState<Verse[]>([]),[loading,setLoading]=useState(false),[error,setError]=useState('');
  const dialog=useRef<HTMLDialogElement>(null),input=useRef<HTMLInputElement>(null),controller=useRef<AbortController|null>(null),oldOverflow=useRef(''),scrollLocked=useRef(false);
@@ -41,7 +42,7 @@ const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number
  async function loadVerses(id:string,number:number){
   controller.current?.abort();const request=new AbortController();controller.current=request;
   setChosenBook(id);setChosenChapter(number);setStep('verses');setQuery('');setError('');setLoading(true);setAvailableVerses([]);
-  try{const data=await readBibleBook(id,request.signal);if(request.signal.aborted)return;if(!data[number]?.length)throw Error('No se encontró ese capítulo.');setAvailableVerses(data[number]);}
+  try{const data=await readBibleBook(id,request.signal,version);if(request.signal.aborted)return;if(!data[number]?.length)throw Error('No se encontró ese capítulo.');setAvailableVerses(data[number]);}
   catch(error){if(!request.signal.aborted)setError(isOnline()&&error instanceof Error&&!(error instanceof TypeError)?error.message:'Este libro todavía no está descargado. Conéctate para abrirlo o descarga la Biblia completa.');}
   finally{if(!request.signal.aborted)setLoading(false)}
  }
@@ -52,7 +53,7 @@ const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number
   if(match.verse===undefined){go(match.book.id,match.chapter);return}
   controller.current?.abort();const request=new AbortController();controller.current=request;setLoading(true);setError('');
   try{
-   const data=await readBibleBook(match.book.id,request.signal);if(request.signal.aborted)return;
+   const data=await readBibleBook(match.book.id,request.signal,version);if(request.signal.aborted)return;
    const verses=data[match.chapter]||[];
    if(!verses.some(item=>item.verse===match.verse)){setError(`${match.book.name} ${match.chapter} tiene ${verses.length} versículos. Elige un versículo de ese capítulo.`);return}
    go(match.book.id,match.chapter,match.verse);
@@ -65,7 +66,7 @@ const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number
  return <div className="bible-navigation">
   <div className="bible-reference-controls"><button type="button" disabled={disabled} onClick={()=>open('books')} aria-label={'Libro: '+current.name} aria-haspopup="dialog"><span>Libro</span><b>{current.name}</b><ChevronDown size={16}/></button><button type="button" disabled={disabled} onClick={()=>open('chapters')} aria-label={'Capítulo: '+chapter} aria-haspopup="dialog"><span>Capítulo</span><b>{chapter}</b><ChevronDown size={16}/></button><button type="button" disabled={disabled} onClick={()=>open('verses')} aria-label={'Versículo: '+(verse||'Elegir')} aria-haspopup="dialog"><span>Versículo</span><b>{verse||'Elegir'}</b><ChevronDown size={16}/></button></div>
   <dialog ref={dialog} className="bible-finder" aria-labelledby={titleId} onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close()}}} onClick={event=>{if(event.target===dialog.current)close()}} onClose={()=>{if(!dialog.current?.open){controller.current?.abort();if(scrollLocked.current){document.documentElement.style.overflow=oldOverflow.current;scrollLocked.current=false}}}}>
-   <div className="bible-finder-heading"><div><span className="eyebrow">REINA-VALERA 1909</span><h2 id={titleId}>Encuentra tu lectura</h2></div><button type="button" className="bible-finder-close" autoFocus onClick={close} aria-label="Cerrar buscador de Biblia"><X size={22}/></button></div>
+   <div className="bible-finder-heading"><div><span className="eyebrow">{BIBLE_VERSIONS.find(item=>item.id===version)?.shortName}</span><h2 id={titleId}>Encuentra tu lectura</h2></div><button type="button" className="bible-finder-close" autoFocus onClick={close} aria-label="Cerrar buscador de Biblia"><X size={22}/></button></div>
    <form className="bible-reference-search" role="search" onSubmit={event=>{event.preventDefault();const options=found.matches.filter(match=>!match.error);if(options.length===1)void chooseReference(options[0]);else setError('Elige el libro o la referencia de la lista.');}}><Search size={20}/><input ref={input} type="search" autoComplete="off" spellCheck={false} maxLength={80} aria-label="Buscar libro, capítulo o versículo" aria-controls={resultsId} placeholder="Pedro, Salmos 23, Juan 3:16…" value={query} onFocus={()=>window.setTimeout(()=>input.current?.scrollIntoView({block:'center',behavior:'smooth'}),180)} onChange={event=>{controller.current?.abort();setLoading(false);setQuery(event.target.value);setStep('books');setError('')}} onKeyDown={event=>{if(event.key==='ArrowDown'){event.preventDefault();document.getElementById(resultsId)?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus()}}}/></form>
    {!query&&<div className="bible-finder-steps" role="group" aria-label="Seleccionar pasaje"><button type="button" aria-current={step==='books'?'step':undefined} onClick={()=>backTo('books')}>1. Libro</button><ChevronRight size={15}/><button type="button" aria-current={step==='chapters'?'step':undefined} onClick={()=>backTo('chapters')}>2. Capítulo</button><ChevronRight size={15}/><button type="button" aria-current={step==='verses'?'step':undefined} onClick={()=>backTo('verses')}>3. Versículo</button></div>}
    {step==='books'&&!query&&<div className="bible-testament-tabs" role="group" aria-label="Filtrar libros"><button type="button" aria-pressed={testament==='all'} onClick={()=>setTestament('all')}>Todos</button><button type="button" aria-pressed={testament==='old'} onClick={()=>setTestament('old')}>Antiguo</button><button type="button" aria-pressed={testament==='new'} onClick={()=>setTestament('new')}>Nuevo</button></div>}

@@ -12,7 +12,7 @@ export default function DownloadManager(){
  async function refresh(){
   if(!('caches'in window))throw Error('Este navegador no permite descargas sin conexión.');
   const cache=await caches.open(BIBLE_CACHE),keys=await cache.keys();
-  const ids=keys.map(key=>new URL(key.url).pathname.split('/').pop()!.replace('.json','')).filter(id=>books.some(book=>book.id===id));
+  const ids=keys.filter(key=>new URL(key.url).pathname.includes('/bible/bes/')).map(key=>new URL(key.url).pathname.split('/').pop()!.replace('.json','')).filter(id=>books.some(book=>book.id===id));
   const sizes=await Promise.all(keys.map(async key=>(await (await cache.match(key))!.blob()).size));
   setDownloaded(ids);setBytes(sizes.reduce((sum,size)=>sum+size,0));
  }
@@ -22,7 +22,7 @@ export default function DownloadManager(){
   const downloadController=new AbortController();controller.current=downloadController;
   try{
    const cache=await caches.open(BIBLE_CACHE);
-   const paths=['/bible/books.json',...books.map(book=>'/bible/'+book.id+'.json')];
+   const paths=['/bible/books.json',...books.map(book=>'/bible/bes/'+book.id+'.json')];
    for(let index=0;index<paths.length;index++){
     if(downloadController.signal.aborted)throw new DOMException('Cancelado','AbortError');
     if(!await cache.match(paths[index])){
@@ -42,7 +42,7 @@ export default function DownloadManager(){
   setNotice('');try{await caches.delete(BIBLE_CACHE);await refresh();setNotice('Biblia descargada eliminada. Tus marcadores se conservaron.')}catch{setNotice('No se pudieron eliminar las descargas.')}
  }
  return <section className="pwa-downloads" aria-label="Administrar descargas">
-  <h2>Administrar descargas</h2><p>Los libros que lees se guardan automáticamente en este dispositivo.</p>
+  <h2>Administrar descargas</h2><p>Los libros que lees se guardan automáticamente. La descarga completa usa Español Sencillo 2026.</p>
   <p><b>{downloaded.length} de {books.length} libros</b> · {formatBytes(bytes)}</p>
   <div className="pwa-actions"><button className="primary" disabled={busy||!online||downloaded.length===books.length} onClick={downloadBible}>Descargar Biblia completa</button><button className="outline" disabled={busy||!downloaded.length} onClick={removeBible}>Eliminar Biblia descargada</button></div>
   {busy&&<div role="status"><progress value={progress} max={books.length+1}/><span> {progress} / {books.length+1}</span><button className="textbtn" onClick={()=>controller.current?.abort()}>Pausar descarga</button></div>}
