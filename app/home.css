@@ -33,6 +33,7 @@
 .church-social-links strong{display:block;font-size:12px;font-weight:650;line-height:1.5}
 .church-social-links small{display:block;font-size:11px;line-height:1.5;margin-top:2px;color:var(--muted)}
 .home-designed .church-social-links a:hover strong{text-decoration:underline;text-underline-offset:4px}
+.home-designed .home-install-button{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;min-height:44px;padding:10px 14px;border:1px solid var(--line);border-radius:10px;background:var(--blue-light);color:var(--ink);font-size:12px;font-weight:650}.home-designed .home-install-button:hover{border-color:var(--muted)}
 html[data-theme=dark] .home-designed .home-verse{background:#22352e;border-color:#40564a;box-shadow:none}
 @media(min-width:1500px){.home-dashboard.home-designed{padding-top:60px}.home-designed .home-verse{min-height:460px}}
 @media(max-width:900px){.home-dashboard.home-designed{width:calc(100% - 40px);padding-top:28px}.home-feature-grid{gap:16px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}.home-designed .home-verse{padding:26px;min-height:390px}.home-designed .home-community{padding:24px}.home-designed .home-community h2{font-size:30px}}

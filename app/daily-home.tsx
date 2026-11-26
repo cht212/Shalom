@@ -9,6 +9,7 @@ import type {Actor} from '../lib/access';
 import books from '../public/bible/books.json';
 import {dailyPosition,limaDate} from '../lib/daily-verse';
 import {churchInfo} from '../lib/church-info';
+import InstallShalom from './pwa-install';
 
 export type DailyVerse={book:string;chapter:number;verse:string;text:string};
 
@@ -36,6 +37,7 @@ export default function DailyHome({onRead,actor}:{onRead:(book:string,chapter:nu
    <div className="home-community-heading"><span className="home-church-icon"><Church size={22}/></span><span className="home-kicker">SOMOS SHALOM</span></div>
    <div className="home-community-message"><h2 id="home-community-title">Una iglesia. <span>Una familia.</span></h2><p>Compartimos la fe y caminamos juntos.</p><span className="home-church-name">{churchInfo.name}</span></div>
    {churchInfo.socialLinks.length>0&&<div className="church-social-links">{churchInfo.socialLinks.map(link=><a key={link.url} href={link.url} target="_blank" rel="noreferrer"><Image src="/branding/facebook-primary.png" alt="" width={32} height={32}/><span><strong>Síguenos en {link.name}</strong><small>Conoce nuestra comunidad</small></span><ArrowUpRight size={18}/></a>)}</div>}
+   <InstallShalom/>
   </section>
   </div>
  </section>;
