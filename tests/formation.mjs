@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {canAssignMember,eligibleLeaders,ownAssignments,canManageAssignment} from '../lib/formation.ts';
+const data={cells:[{id:'c1',sector:'s1'},{id:'c2',sector:'s2'}],people:[{id:'p1',cell:'c1'},{id:'p2',cell:'c2'}]};
+const leader={id:'l1',role:'cell_leader',cell:'c1',person:'p1'};
+const other={id:'l2',role:'cell_leader',cell:'c2'};
+const grant={id:'g1',kind:'leader',target:'l1',book:'discipulado-1',assignedBy:'admin'};
+const s={assignments:[grant]};
+assert.equal(canAssignMember(leader,'discipulado-1','p1',s,data),true);
+assert.equal(canAssignMember(leader,'discipulado-1','p2',s,data),false);
+assert.equal(canAssignMember(leader,'discipulado-1','p1',{assignments:[]},data),false);
+assert.equal(canAssignMember({...leader,role:'pending'},'discipulado-1','p1',s,data),false);
+assert.equal(canManageAssignment(leader,grant,s,data,[leader,other]),false);
+assert.deepEqual(eligibleLeaders({id:'s',role:'sector_leader',sector:'s1'},[leader,other],data),[leader]);
+assert.equal(eligibleLeaders({id:'a',role:'admin'},[leader,other],data).length,2);
+assert.equal(ownAssignments({...leader,role:'disciple'}, {assignments:[{kind:'member',target:'p2'},{kind:'member',target:'p1'}]}).length,1);
+assert.equal(canManageAssignment(other,{kind:'member',target:'p1',book:'discipulado-1'},s,data,[leader,other]),false);
+console.log('PASS: grants, own-cell assignment, sector scope and private member library.');

@@ -2,7 +2,7 @@
 
 import {useEffect,useRef} from 'react';
 import Link from 'next/link';
-import {BookOpen,Bookmark,LayoutDashboard,LogIn,PenLine,UserRound,UsersRound,Home} from 'lucide-react';
+import {BookOpen,Bookmark,LayoutDashboard,LogIn,PenLine,UserRound,Home} from 'lucide-react';
 import {useSession} from './use-session';
 import type {Actor} from '../lib/access';
 
@@ -20,7 +20,7 @@ export default function ReaderNav({actor,sessionLoading=false,view,onHome,onRead
   {sessionLoading&&!actor?<span className="app-only-nav-item reader-nav-placeholder" role="status" aria-label="Cargando sesión"/>:actor||studyOwner?<Link className={'app-only-nav-item '+(view==='profile'?'current':'')} href="/perfil" aria-current={view==='profile'?'page':undefined}><UserRound size={21}/><span>Perfil</span></Link>:<Link className="app-only-nav-item" href="/ingresar?return_to=/"><LogIn size={21}/><span>Entrar</span></Link>}
 
   <button className={'web-only-nav-item '+(view==='home'?'current':'')} aria-current={view==='home'?'page':undefined} onClick={onHome}><Home size={19}/><span>Inicio</span></button>
-  <Link className="web-only-nav-item" href="/#comunidad"><UsersRound size={19}/><span>Comunidad</span></Link>
+  <button className={'web-only-nav-item '+(view==='saved'?'current':'')} aria-current={view==='saved'?'page':undefined} onClick={onSaved}><Bookmark size={19}/><span>Guardados</span></button>
   <button className={'web-only-nav-item '+(view==='bible'?'current':'')} aria-current={view==='bible'?'page':undefined} onClick={onRead}><BookOpen size={19}/><span>Biblia</span></button>
   {actor?<Link className="web-only-nav-item web-account-link" href="/panel"><LayoutDashboard size={19}/><span>Mi panel</span></Link>:<Link className="web-only-nav-item web-account-link" href="/ingresar?return_to=/panel"><LogIn size={19}/><span>Iniciar sesión</span></Link>}
  </div></nav>;

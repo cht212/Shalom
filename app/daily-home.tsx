@@ -2,7 +2,8 @@
 
 import {useEffect,useState} from 'react';
 import Link from 'next/link';
-import {ArrowRight,BookOpen,ShieldCheck,Sunrise} from 'lucide-react';
+import {ArrowRight,ShieldCheck,Sunrise} from 'lucide-react';
+import AssignedBooks from './assigned-books';
 import {readBibleBook} from '../lib/bible-client';
 import type {Actor} from '../lib/access';
 import books from '../public/bible/books.json';
@@ -30,11 +31,6 @@ export default function DailyHome({onRead,actor}:{onRead:(book:string,chapter:nu
    {error?<span className="home-verse-error" role="alert">{error}</span>:verse?<><q>{verse.text}</q><span className="home-verse-reference">{reference}<ArrowRight size={16}/></span></>:<span className="home-verse-loading">Preparando la lectura de hoy…</span>}
   </button>
 
-  <section className="formation-section" aria-labelledby="formation-title">
-   <div className="formation-heading"><span className="eyebrow">MI FORMACIÓN</span><h2 id="formation-title">Libros de estudio</h2></div>
-   <div className="formation-books">
-    <article className="formation-book"><div className="book-cover" role="img" aria-label="Portada de Discipulado 1 pendiente de cargar"><BookOpen size={34}/></div><h3>Discipulado 1</h3></article>
-   </div>
-  </section>
+  {actor&&actor.role!=='pending'&&<AssignedBooks key={actor.id} actor={actor}/>}
  </section>;
 }

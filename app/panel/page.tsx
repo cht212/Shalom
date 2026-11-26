@@ -12,5 +12,5 @@ export default async function Panel({searchParams}:{searchParams:Promise<{tab?:s
  const requested=(await searchParams).tab||'inicio';
  const allowed=a.role==='admin'?['inicio','celulas','personas','informes','devocionales','discipulado','cuentas']:['inicio','devocionales','discipulado','personas','informes'];
  const initialTab=allowed.includes(requested)?requested:'inicio';
- return a.role==='admin'?<Dashboard initialPage={initialTab}/>:<RolePanel actor={a} initialTab={initialTab}/>;
+ return a.role==='admin'?<Dashboard actor={a} initialPage={initialTab}/>:<RolePanel actor={a} initialTab={initialTab}/>;
 }
