@@ -30,7 +30,7 @@ self.addEventListener('message',event=>{
 });
 self.addEventListener('fetch',event=>{
  const request=event.request,url=new URL(request.url);
- if(request.method!=='GET'||url.origin!==self.location.origin||url.pathname.startsWith('/api/')||request.headers.has('RSC')||request.headers.has('Next-Router-Prefetch'))return;
+ if(request.method!=='GET'||url.origin!==self.location.origin||url.pathname.startsWith('/api/')||url.pathname==='/manifest.webmanifest'||request.headers.has('RSC')||request.headers.has('Next-Router-Prefetch'))return;
  if(request.mode==='navigate'){
   event.respondWith((async()=>{
    try{return await fetch(request)}catch{

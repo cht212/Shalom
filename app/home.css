@@ -1,0 +1,59 @@
+/* Home has its own editorial rhythm; reader and management keep their sizing. */
+.home-dashboard.home-designed{width:min(1120px,calc(100% - 64px));padding:44px 0 32px}
+.home-designed .home-welcome{align-items:center;margin-bottom:28px;gap:18px}
+.home-designed .home-kicker{display:block;font-size:10px;line-height:1.5;letter-spacing:1.8px;font-weight:700;color:var(--gold-ink)}
+.home-designed .home-welcome h1{margin-top:8px;font-size:clamp(28px,3vw,40px);line-height:1.15;letter-spacing:-1.5px}
+.home-designed .home-welcome p{margin-top:10px;font-size:14px;color:var(--muted)}
+.home-feature-grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(0,1fr);gap:22px;align-items:stretch}
+.home-feature-grid>*{min-width:0}
+.home-designed .home-verse{position:relative;isolation:isolate;display:flex;flex-direction:column;justify-content:space-between;gap:24px;max-width:none;min-height:420px;margin:0;padding:30px 34px;border:1px solid #384a44;border-radius:22px;background:#243b34;color:#faf6eb;box-shadow:0 12px 36px #182b2210;text-align:left;transition:border-color .2s}
+.home-designed .home-verse:not(:disabled):hover{border-color:#a89d7b}
+.home-designed .home-verse:focus-visible{outline:3px solid var(--gold);outline-offset:5px}
+.home-designed .home-verse-art{position:absolute;z-index:-1;right:-30px;bottom:-75px;width:310px;height:auto;stroke:#cbbd8d;stroke-width:1;opacity:.13;pointer-events:none}
+.home-designed .home-verse-label{gap:8px;color:#e2d5b6;font-size:10px;letter-spacing:1.1px;flex-wrap:wrap}
+.home-designed .home-verse-label time{color:#e4e9e2;font-size:11px}
+.home-verse-body{display:block;position:relative;padding-top:16px}
+.home-quote-mark{display:block;height:29px;color:#cdbd91;font:64px/1 Georgia,serif}
+.home-designed .home-verse q{display:block;max-width:31ch;margin:8px 0 0;font:400 clamp(25px,2.5vw,34px)/1.42 Georgia,serif;letter-spacing:-.4px;text-wrap:pretty;overflow-wrap:break-word;quotes:none}
+.home-verse-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;padding-top:20px;border-top:1px solid #cbbd8d38}
+.home-designed .home-verse-reference{color:#e2d5b6;font-size:12px;font-weight:650;letter-spacing:.3px}
+.home-verse-open{display:inline-flex;align-items:center;gap:9px;min-height:24px;color:#f2f4ed;font-size:11px}
+.home-designed .home-verse-loading,.home-designed .home-verse-error{margin:auto 0;min-height:110px;display:grid;align-content:center;color:#faf6eb;font-size:14px}
+.home-designed .home-community{display:flex;flex-direction:column;justify-content:space-between;gap:26px;width:100%;max-width:none;margin:0;padding:28px;border:1px solid var(--line);border-radius:22px;background:var(--surface);color:var(--ink)}
+.home-community-heading{display:flex;align-items:center;gap:12px}
+.home-church-icon{display:grid;place-items:center;width:44px;height:44px;flex-shrink:0;border:1px solid var(--line);border-radius:50%;color:var(--olive)}
+.home-designed .home-community h2{font:500 clamp(29px,3vw,38px)/1.13 Georgia,serif;letter-spacing:-.8px;color:var(--ink)}
+.home-community h2>span{display:block}
+.home-designed .home-community-message p{margin-top:16px;max-width:25ch;font-size:14px;line-height:1.6;color:var(--muted)}
+.home-church-name{display:block;margin-top:12px;font-size:11px;color:var(--muted)}
+.home-designed .church-social-links{display:block;margin:0;padding-top:22px;border-top:1px solid var(--line)}
+.home-designed .church-social-links a{display:flex;align-items:center;gap:12px;min-height:48px;color:var(--ink);text-decoration:none;border-radius:8px}
+.church-social-links a>img{width:32px;height:32px;flex-shrink:0}
+.home-designed .church-social-links a>span{flex:1;min-width:0}
+.church-social-links strong{display:block;font-size:12px;font-weight:650;line-height:1.5}
+.church-social-links small{display:block;font-size:11px;line-height:1.5;margin-top:2px;color:var(--muted)}
+.home-designed .church-social-links a:hover strong{text-decoration:underline;text-underline-offset:4px}
+html[data-theme=dark] .home-designed .home-verse{background:#22352e;border-color:#40564a;box-shadow:none}
+@media(min-width:1500px){.home-dashboard.home-designed{padding-top:60px}.home-designed .home-verse{min-height:460px}}
+@media(max-width:900px){.home-dashboard.home-designed{width:calc(100% - 40px);padding-top:28px}.home-feature-grid{gap:16px;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr)}.home-designed .home-verse{padding:26px;min-height:390px}.home-designed .home-community{padding:24px}.home-designed .home-community h2{font-size:30px}}
+@media(max-width:640px){
+ .home-dashboard.home-designed{width:calc(100% - 32px);padding:24px 0 12px}
+ .home-designed .home-welcome{margin-bottom:20px}
+ .home-designed .home-welcome h1{font-size:29px;letter-spacing:-1px}
+ .home-designed .home-welcome p{font-size:12px;max-width:30ch;margin-top:8px}
+ .home-designed .home-kicker{font-size:9px;letter-spacing:1.5px}
+ .home-feature-grid{grid-template-columns:minmax(0,1fr);gap:14px}
+ .home-designed .home-verse{min-height:300px;padding:22px;gap:20px;border-radius:18px}
+ .home-designed .home-verse q{font-size:25px;line-height:1.42;letter-spacing:-.3px}
+ .home-designed .home-verse-label{font-size:9px;letter-spacing:.8px}
+ .home-designed .home-verse-label time{font-size:10px}
+ .home-designed .home-verse-art{width:250px;right:-45px;bottom:-65px}
+ .home-verse-body{padding-top:0}.home-verse-bottom{padding-top:16px;gap:12px}
+ .home-designed .home-community{position:relative;gap:14px;padding:20px;border-radius:18px}
+ .home-community-heading{gap:8px}.home-church-icon{position:absolute;top:18px;right:20px;width:36px;height:36px}.home-church-icon svg{width:18px}
+ .home-designed .home-community h2{font-size:25px;line-height:1.2;letter-spacing:-.4px}.home-community h2>span{display:inline}
+ .home-designed .home-community-message p{margin-top:6px;max-width:none;font-size:12px}
+ .home-church-name{display:none}.home-designed .church-social-links{padding-top:12px}
+ .home-designed .church-social-links a{min-height:44px}.church-social-links small{font-size:10px}
+}
+@media(prefers-reduced-motion:reduce){.home-designed .home-verse{transition:none}}

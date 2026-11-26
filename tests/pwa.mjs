@@ -16,7 +16,7 @@ function worker(){
  };
  const self={location:{origin:'https://shalom.test'},clients:{async claim(){}},skipWaiting(){self.skipped=true},addEventListener(name,callback){handlers[name]=callback}};
  vm.runInNewContext(source,{self,caches,URL,Response,Set,Error,
-  importScripts(){self.SHALOM_BUILD={version:'test',precache:['/','/?view=bible','/?view=saved','/?view=devocional','/offline.html','/_next/static/app.js']};},
+  importScripts(){self.SHALOM_BUILD={version:'test',precache:['/','/?view=bible','/?view=saved','/?view=devocional','/offline.html','/_next/static/app.js','/manifest.webmanifest']};},
   async fetch(path,options){requests.push({path,options});return new Response('public shell')},
  });
  return {handlers,storage,caches,requests,self};
@@ -29,6 +29,7 @@ test('private APIs, mutations, RSC and other origins always bypass the worker',(
  for(const headers of [{RSC:'1'},{'Next-Router-Prefetch':'1'}])handlers.fetch({request:new Request('https://shalom.test/',{headers}),respondWith(){assert.fail('RSC must be network-only')}});
  handlers.fetch({request:new Request('https://example.com/bible/PSA.json'),respondWith(){assert.fail('External origin must be network-only')}});
  handlers.fetch({request:new Request('https://shalom.test/perfil'),respondWith(){assert.fail('Private resources must not enter runtime cache')}});
+ handlers.fetch({request:new Request('https://shalom.test/manifest.webmanifest'),respondWith(){assert.fail('Installation branding must bypass even a legacy manifest cache entry')}});
 });
 test('installation precaches only anonymous public resources and waits for update consent',async()=>{
  const {handlers,requests,self}=worker();let installed;
