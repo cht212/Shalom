@@ -14,6 +14,6 @@ export async function readBibleBook(book:string,signal?:AbortSignal,version:Bibl
  const data=await response.clone().json() as Record<string,Verse[]>;
  signal?.throwIfAborted();
  // Also retain the first book read before the service worker gains control.
- try{await cache?.put(path,response)}catch{/* Reading still works if device storage is full. */}
+ if(cache)void cache.put(path,response).catch(()=>{/* Reading still works if device storage is full. */});
  return data;
 }

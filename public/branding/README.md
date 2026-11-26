@@ -1,3 +1,3 @@
 Identidad oficial: Misión Cristiana Shalom.
 
-`shalom-app-icon.png` contiene el emblema azul y blanco oficial de la iglesia, con fondo exterior transparente. Los archivos `shalom-app-*` se generan desde este emblema para la instalación y los iconos del navegador.
+`shalom-app-icon.png` es la fuente maestra del emblema oficial. Los archivos públicos `shalom-2026-*` usan nombres versionados para que Android y el service worker no reutilicen el logo anterior desde caché.

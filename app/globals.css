@@ -81,6 +81,9 @@ html[data-theme=dark] .church-word-section{background:#191d21}html[data-theme=da
 .readerheader{position:sticky;top:0;z-index:50;background:var(--surface);backdrop-filter:none;box-shadow:0 1px 0 var(--line)}
 .header-bible-search{display:flex;align-items:center;gap:8px;min-height:40px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--navy);font-size:12px;font-weight:700}
 .header-bible-search:hover{background:var(--blue-light)}
+.header-bible-search{width:210px;padding:0 5px 0 12px}.header-bible-search input{width:100%;min-width:0;height:40px;padding:0 6px;border:0;background:transparent;color:var(--ink);font-size:13px;outline:0}.header-bible-search input::placeholder{color:var(--muted)}.header-bible-search button{min-width:40px;min-height:40px;border-radius:999px;background:var(--blue-light);color:var(--navy);font-size:11px;font-weight:800}.header-bible-search:focus-within{border-color:#78aee9;box-shadow:0 0 0 3px #0867d818}
+.readerpaper>.bible-navigation{height:0;padding:0;border:0}
+.translation-picker select,.fontcontrols button{min-height:44px}.church-paths a,.church-paths button,.church-word-heading .outline{min-height:44px}.loginform a.textbtn{display:flex;align-items:center;justify-content:center;min-height:44px}
 .translation-picker{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:11px}.translation-picker select{min-height:38px;max-width:220px;padding:7px 28px 7px 10px;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--ink);font-size:12px}
 .web-bible-layout{grid-template-columns:minmax(0,780px) minmax(220px,270px)!important;max-width:1100px!important;justify-content:center}
 .web-bible-layout>.readerpaper{grid-column:1}.web-bible-study{grid-column:2}
@@ -94,8 +97,10 @@ html[data-app-mode='web'] .web-bible-layout .bible-navigation{grid-template-colu
 }
 @media(max-width:600px){
  html,body,.bibleapp{overflow-x:clip}
- .header-bible-search{width:40px;min-width:40px;padding:0;justify-content:center}
- .header-bible-search span{display:none}
+ .bibleapp>.readerheader:has(.header-bible-search) .brand-wordmark{display:none!important}
+ .header-bible-search{width:min(55vw,205px);min-width:150px;height:44px;padding-left:10px}
+ .header-bible-search input{height:42px;font-size:16px}
+ .header-bible-search button{min-width:40px;min-height:40px}
  .translation-picker span{display:none}.translation-picker select{max-width:180px}
  .church-hero{padding:32px 0 45px;gap:28px}
  .church-hero h1{font-size:clamp(34px,10vw,40px);line-height:1.06;letter-spacing:-1.8px}
@@ -106,4 +111,21 @@ html[data-app-mode='web'] .web-bible-layout .bible-navigation{grid-template-colu
  .church-path-icon{margin-bottom:22px}
  .church-word-section{padding-top:52px;padding-bottom:52px}
  .church-account{margin:52px auto}
+ .church-intro{padding:38px 0 24px}.church-intro p{display:none}
+ .church-paths{display:flex;width:100%;padding:0 16px 38px;gap:12px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding-inline:16px;overscroll-behavior-inline:contain;scrollbar-width:none}
+ .church-paths::-webkit-scrollbar{display:none}.church-paths article,.church-paths article:last-child{flex:0 0 min(82vw,310px);min-height:240px;padding:22px;scroll-snap-align:start}.church-path-number{font-size:27px}.church-path-icon{width:44px;height:44px;margin-bottom:18px}.church-paths h3{font-size:19px}.church-paths p{margin:11px 0 16px;line-height:1.6}
+ .church-word-section{gap:24px}.church-word-heading p{display:none}.church-word-heading .outline{margin-top:18px}.church-word-visual>img{height:170px}.church-word-visual .church-daily-card{width:100%;margin:12px 0 0;padding:22px}.church-daily-card blockquote{margin:22px 0 16px;font-size:20px;line-height:1.5}
+ .church-account{padding:25px 22px}.church-account-icon{width:48px;height:48px}.church-account h2{font-size:26px}
+ .readerfooter{padding-bottom:calc(var(--reader-nav-height) + 14px)}
 }
+
+/* Unified, compact home inspired by a modern reading-plan library. */
+.bible-main:has(.home-dashboard){max-width:none;padding:0 0 calc(var(--reader-nav-height) + 42px);background:#f4f5f7}
+.bibleapp:has(.home-dashboard){min-height:0;padding-bottom:0}.bibleapp:has(.home-dashboard) .readerfooter,body:has(.home-dashboard) .pwa-tools{display:none}
+.home-dashboard{width:min(100% - 40px,1060px);margin:0 auto;padding:30px 0 42px}
+.home-welcome{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:22px}.home-welcome .eyebrow{margin-bottom:7px;color:var(--navy)}.home-welcome h1{font-size:clamp(25px,3vw,36px);letter-spacing:-1.2px}.home-welcome p{margin-top:6px;color:var(--muted);font-size:13px}.home-review-link{display:flex;align-items:center;gap:8px;min-height:44px;padding:9px 13px;border:1px solid var(--line);border-radius:10px;background:var(--surface);color:var(--navy);font-size:11px;font-weight:750;white-space:nowrap}
+.home-verse{display:grid;width:100%;min-height:220px;padding:25px 28px;border-radius:20px;background:linear-gradient(135deg,#075abe 0%,#0a73e8 58%,#3896f5 100%);color:#fff;text-align:left;box-shadow:0 15px 34px #075abe20;overflow:hidden}.home-verse:disabled{opacity:1}.home-verse-label{display:flex;align-items:center;gap:8px;color:#eaf5ff;font-size:10px;font-weight:800;letter-spacing:1.1px;text-transform:uppercase}.home-verse-label time{margin-left:auto;color:#fff;font-weight:650;letter-spacing:0;text-transform:none}.home-verse q{align-self:center;max-width:40ch;margin:24px 0 18px;font:600 clamp(20px,3vw,29px)/1.42 'Manrope',sans-serif;quotes:'“' '”';text-wrap:balance}.home-verse-reference{display:flex;align-items:center;gap:7px;align-self:end;font-size:12px;font-weight:750}.home-verse-loading,.home-verse-error{align-self:center;font-size:13px}
+.formation-section{margin-top:28px}.formation-heading .eyebrow{margin-bottom:7px}.formation-heading h2{font-size:22px}.formation-books{display:flex;gap:13px;margin-top:14px;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}.formation-books::-webkit-scrollbar{display:none}.formation-book{flex:0 0 250px;scroll-snap-align:start}.formation-book .book-cover{position:relative;display:grid;place-items:center;aspect-ratio:16/10;border-radius:14px;background:linear-gradient(145deg,#075abe,#278ef2);color:#fff;box-shadow:0 10px 26px #075abe22;overflow:hidden}.formation-book .book-cover::before{content:'';position:absolute;width:190px;height:190px;right:-95px;top:-95px;border:30px solid #ffffff14;border-radius:50%}.formation-book .book-cover svg{position:relative}.formation-book h3{margin-top:10px;font-size:14px;letter-spacing:-.2px}
+.discipleship-workspace{display:grid;gap:18px}.discipleship-catalog,.discipleship-review{overflow:hidden}.discipleship-book-row{display:flex;align-items:center;gap:13px;margin-top:14px;padding:16px 20px;border-top:1px solid var(--line)}.discipleship-book-icon{display:grid;place-items:center;width:42px;height:42px;border-radius:10px;background:var(--blue-light);color:var(--navy)}.discipleship-book-row>div{display:grid;gap:4px;flex:1}.discipleship-book-row small{color:var(--muted)}.discipleship-book-row .status{display:flex;align-items:center;gap:5px}.discipleship-review .empty{border-top:1px solid var(--line)}
+html[data-theme=dark] .bible-main:has(.home-dashboard){background:#11161b}html[data-theme=dark] .home-review-link{background:var(--surface);border-color:var(--line)}
+@media(max-width:680px){.bible-main:has(.home-dashboard){padding-bottom:calc(var(--reader-nav-height) + 24px)}.home-dashboard{width:calc(100% - 28px);padding:20px 0 26px}.home-welcome{align-items:flex-start;margin-bottom:16px}.home-welcome p{font-size:11px;line-height:1.5}.home-review-link{width:44px;padding:0;justify-content:center}.home-review-link span,.home-review-link>svg:last-child{display:none}.home-verse{min-height:188px;padding:20px;border-radius:16px}.home-verse q{margin:20px 0 14px;font-size:clamp(18px,5.3vw,23px);line-height:1.4}.formation-section{margin-top:23px}.formation-heading h2{font-size:20px}.formation-books{width:calc(100vw - 14px);margin-right:-14px}.formation-book{flex-basis:min(72vw,270px)}.discipleship-book-row{align-items:flex-start;flex-wrap:wrap}.discipleship-book-row .status{margin-left:55px}}

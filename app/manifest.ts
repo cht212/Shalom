@@ -6,8 +6,8 @@ export default function manifest():MetadataRoute.Manifest{
   description:'Tu Biblia y comunidad de Misión Cristiana Shalom.',start_url:'/',scope:'/',display:'standalone',
   background_color:'#f5f9ff',theme_color:'#0867d8',
   icons:[192,512].flatMap(size=>[
-   {src:`/branding/shalom-app-${size}.png`,sizes:`${size}x${size}`,type:'image/png',purpose:'any' as const},
-   {src:`/branding/shalom-app-maskable-${size}.png`,sizes:`${size}x${size}`,type:'image/png',purpose:'maskable' as const},
+   {src:`/branding/shalom-2026-${size}.png`,sizes:`${size}x${size}`,type:'image/png',purpose:'any' as const},
+   {src:`/branding/shalom-2026-maskable-${size}.png`,sizes:`${size}x${size}`,type:'image/png',purpose:'maskable' as const},
   ]),
  };
 }

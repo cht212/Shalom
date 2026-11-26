@@ -4,7 +4,6 @@ import {usePathname} from 'next/navigation';
 import DownloadManager from './download-manager';
 import {isOnline,useOnline} from './use-online';
 import {OfflineMessage} from './online-only';
-import AppSplash from './app-splash';
 
 type InstallEvent=Event&{prompt:()=>Promise<void>;userChoice:Promise<{outcome:'accepted'|'dismissed'}>};
 export default function PwaRuntime({children}:{children:React.ReactNode}){
@@ -61,7 +60,6 @@ export default function PwaRuntime({children}:{children:React.ReactNode}){
  }
  const privateSection=pathname!=='/'&&pathname!=='/offline';
  return <>
-  <AppSplash/>
   {!online&&<div className="pwa-banner" role="status">Sin conexión · Biblia y guardados disponibles en este dispositivo. Los formularios necesitan internet.</div>}
   {!installed&&ios&&<div className="pwa-install-banner" role="status"><div><strong>Instala Shalom en tu iPhone</strong><span>Así aparecerá como una app en tu pantalla de inicio.</span></div><button className="primary" onClick={requestInstall}>Ver cómo instalar</button></div>}
   {update&&<div className="pwa-banner" role="status">Hay una actualización disponible <button className="outline" onClick={()=>{if(registration?.waiting){applying.current=true;registration.waiting.postMessage({type:'APPLY_UPDATE'})}}}>Actualizar ahora</button><small>La aplicación se recargará. Termina tus formularios antes de actualizar.</small></div>}

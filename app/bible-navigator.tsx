@@ -1,6 +1,6 @@
 'use client';
 import {forwardRef,useEffect,useId,useImperativeHandle,useRef,useState} from 'react';
-import {BookOpen,ChevronDown,ChevronRight,Search,X} from 'lucide-react';
+import {BookOpen,ChevronRight,Search,X} from 'lucide-react';
 import books from '../public/bible/books.json';
 import {readBibleBook,type Verse} from '../lib/bible-client';
 import {searchBibleReferences,type BibleReferenceMatch} from '../lib/bible-reference';
@@ -9,9 +9,8 @@ import {BIBLE_VERSIONS,type BibleVersion} from '../lib/bible-versions';
 import './bible-navigator.css';
 
 type Step='books'|'chapters'|'verses';
-export type BibleNavigatorHandle={openSearch:()=>void};
+export type BibleNavigatorHandle={openSearch:(query?:string)=>void};
 const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number;verse:string;version:BibleVersion;disabled:boolean;onNavigate:(book:string,chapter:number,verse?:string)=>void}>(function BibleNavigator({book,chapter,verse,version,disabled,onNavigate},ref){
- const current=books.find(item=>item.id===book)!;
  const [step,setStep]=useState<Step>('books'),[chosenBook,setChosenBook]=useState(book),[chosenChapter,setChosenChapter]=useState(chapter),[query,setQuery]=useState(''),[testament,setTestament]=useState<'all'|'old'|'new'>('all'),[availableVerses,setAvailableVerses]=useState<Verse[]>([]),[loading,setLoading]=useState(false),[error,setError]=useState('');
  const dialog=useRef<HTMLDialogElement>(null),input=useRef<HTMLInputElement>(null),controller=useRef<AbortController|null>(null),oldOverflow=useRef(''),scrollLocked=useRef(false);
  const titleId=useId(),resultsId=useId(),chosen=books.find(item=>item.id===chosenBook)!;
@@ -30,14 +29,14 @@ const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number
   return()=>cancelAnimationFrame(frame);
  },[step,query,loading,availableVerses]);
  function close(){controller.current?.abort();setLoading(false);if(scrollLocked.current){document.documentElement.style.overflow=oldOverflow.current;scrollLocked.current=false}dialog.current?.close()}
- function open(next:Step,focusSearch=false){
-  controller.current?.abort();setQuery('');setError('');setTestament('all');setChosenBook(book);setChosenChapter(chapter);setStep(next);setAvailableVerses([]);
+ function open(next:Step,focusSearch=false,initialQuery=''){
+  controller.current?.abort();setQuery(initialQuery);setError('');setTestament('all');setChosenBook(book);setChosenChapter(chapter);setStep(next);setAvailableVerses([]);
   oldOverflow.current=document.documentElement.style.overflow;scrollLocked.current=true;document.documentElement.style.overflow='hidden';dialog.current?.showModal();
   dialog.current?.querySelector('.bible-finder-content')?.scrollTo({top:0});
   if(focusSearch)input.current?.focus();
   if(next==='verses')void loadVerses(book,chapter);else setLoading(false);
  }
- useImperativeHandle(ref,()=>({openSearch:()=>open('books',true)}));
+ useImperativeHandle(ref,()=>({openSearch:(initialQuery='')=>open('books',true,initialQuery)}));
  function chooseBook(id:string){controller.current?.abort();setChosenBook(id);setChosenChapter(id===book?chapter:1);setQuery('');setError('');setStep('chapters');setAvailableVerses([]);setLoading(false)}
  async function loadVerses(id:string,number:number){
   controller.current?.abort();const request=new AbortController();controller.current=request;
@@ -64,7 +63,6 @@ const BibleNavigator=forwardRef<BibleNavigatorHandle,{book:string;chapter:number
  function resultLabel(match:BibleReferenceMatch){return match.book.name+(match.chapter?' '+match.chapter:'')+(match.verse?':'+match.verse:'')}
  const bookSections=[{id:'old',title:'Antiguo Testamento',entries:books.slice(0,39)},{id:'new',title:'Nuevo Testamento',entries:books.slice(39)}];
  return <div className="bible-navigation">
-  <div className="bible-reference-controls"><button type="button" disabled={disabled} onClick={()=>open('books')} aria-label={'Libro: '+current.name} aria-haspopup="dialog"><span>Libro</span><b>{current.name}</b><ChevronDown size={16}/></button><button type="button" disabled={disabled} onClick={()=>open('chapters')} aria-label={'Capítulo: '+chapter} aria-haspopup="dialog"><span>Capítulo</span><b>{chapter}</b><ChevronDown size={16}/></button><button type="button" disabled={disabled} onClick={()=>open('verses')} aria-label={'Versículo: '+(verse||'Elegir')} aria-haspopup="dialog"><span>Versículo</span><b>{verse||'Elegir'}</b><ChevronDown size={16}/></button></div>
   <dialog ref={dialog} className="bible-finder" aria-labelledby={titleId} onKeyDown={event=>{if(event.key==='Escape'){event.preventDefault();event.stopPropagation();close()}}} onClick={event=>{if(event.target===dialog.current)close()}} onClose={()=>{if(!dialog.current?.open){controller.current?.abort();if(scrollLocked.current){document.documentElement.style.overflow=oldOverflow.current;scrollLocked.current=false}}}}>
    <div className="bible-finder-heading"><div><span className="eyebrow">{BIBLE_VERSIONS.find(item=>item.id===version)?.shortName}</span><h2 id={titleId}>Encuentra tu lectura</h2></div><button type="button" className="bible-finder-close" autoFocus onClick={close} aria-label="Cerrar buscador de Biblia"><X size={22}/></button></div>
    <form className="bible-reference-search" role="search" onSubmit={event=>{event.preventDefault();const options=found.matches.filter(match=>!match.error);if(options.length===1)void chooseReference(options[0]);else setError('Elige el libro o la referencia de la lista.');}}><Search size={20}/><input ref={input} type="search" autoComplete="off" spellCheck={false} maxLength={80} aria-label="Buscar libro, capítulo o versículo" aria-controls={resultsId} placeholder="Pedro, Salmos 23, Juan 3:16…" value={query} onFocus={()=>window.setTimeout(()=>input.current?.scrollIntoView({block:'center',behavior:'smooth'}),180)} onChange={event=>{controller.current?.abort();setLoading(false);setQuery(event.target.value);setStep('books');setError('')}} onKeyDown={event=>{if(event.key==='ArrowDown'){event.preventDefault();document.getElementById(resultsId)?.querySelector<HTMLButtonElement>('button:not(:disabled)')?.focus()}}}/></form>
