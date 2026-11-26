@@ -4,7 +4,7 @@ import {readFile} from 'node:fs/promises';
 import vm from 'node:vm';
 
 const source=await readFile(new URL('../public/sw.js',import.meta.url),'utf8');
-function worker(){
+function worker({failPath}={}){
  const handlers={},storage=new Map(),requests=[];
  const caches={
   async open(name){
@@ -17,7 +17,7 @@ function worker(){
  const self={location:{origin:'https://shalom.test'},clients:{async claim(){}},skipWaiting(){self.skipped=true},addEventListener(name,callback){handlers[name]=callback}};
  vm.runInNewContext(source,{self,caches,URL,Response,Set,Error,
   importScripts(){self.SHALOM_BUILD={version:'test',precache:['/','/?view=bible','/?view=saved','/?view=devocional','/offline.html','/_next/static/app.js','/manifest.webmanifest']};},
-  async fetch(path,options){requests.push({path,options});return new Response('public shell')},
+  async fetch(path,options){requests.push({path,options});if(path===failPath)throw Error('Network unavailable');return new Response('public shell')},
  });
  return {handlers,storage,caches,requests,self};
 }
@@ -45,4 +45,28 @@ test('activation removes obsolete shells and preserves user downloads',async()=>
  let activated;handlers.activate({waitUntil(value){activated=value}});await activated;
  assert.equal(storage.has('shalom-shell-old'),false);
  for(const name of ['shalom-shell-test','shalom-bible-rv1909-v1','unrelated-cache'])assert.equal(storage.has(name),true);
+});
+
+test('redownload reports real progress and preserves existing downloads and study caches',async()=>{
+ const {handlers,caches,storage,requests}=worker();
+ await caches.open('shalom-bible-rv1909-v1');await caches.open('shalom-study-other');
+ const messages=[];let work;
+ handlers.message({data:{type:'REFRESH_SHELL'},ports:[{postMessage(message){messages.push(message)},close(){}}],waitUntil(value){work=value}});await work;
+ assert.equal(messages.at(-1).type,'COMPLETE');
+ assert.equal(messages.at(-2).done,messages.at(-2).total);
+ assert.ok(requests.every(({options})=>options.credentials==='omit'&&options.cache==='reload'));
+ assert.ok(storage.has('shalom-bible-rv1909-v1')&&storage.has('shalom-study-other'));
+ assert.equal(storage.has('shalom-shell-test-staging'),false);
+ assert.ok((await (await caches.open('shalom-shell-test')).match('/')).ok);
+});
+
+test('failed redownload retains the working shell and never activates an update',async()=>{
+ const {handlers,caches,storage,self}=worker({failPath:'/offline.html'});
+ const current=await caches.open('shalom-shell-test');await current.put('/',new Response('previous shell'));
+ const messages=[];let work;
+ handlers.message({data:{type:'REFRESH_SHELL'},ports:[{postMessage(message){messages.push(message)},close(){}}],waitUntil(value){work=value}});await work;
+ assert.equal(messages.at(-1).type,'ERROR');
+ assert.equal(await (await current.match('/')).text(),'previous shell');
+ assert.equal(storage.has('shalom-shell-test-staging'),false);
+ assert.equal(self.skipped,undefined);
 });

@@ -4,6 +4,7 @@ import ProfileNavigation from '../profile-navigation';
 import ProfileWorkspace from '../profile-workspace';
 import ProfileQrGenerator from '../profile-qr-generator';
 import BiblePreferences from '../bible-preferences';
+import {UpdateShalom} from '../pwa-install';
 import {requireShalomUser} from '../auth';
 import {actor,state} from '../../lib/server';
 import {canAccessPanel,roleNames,visibleCells} from '../../lib/access';
@@ -40,6 +41,7 @@ export default async function Profile(){
    <ProfileWorkspace/>
    {a.role==='admin'&&<section className="panel admin-books-placeholder" aria-labelledby="admin-books-title"><LibraryBig size={22}/><div><h2 id="admin-books-title">Libros de discipulado</h2><p>Pendiente del material de estudio.</p></div><span>Próximamente</span></section>}
    <BiblePreferences/>
+   <UpdateShalom/>
    {canGenerateRegistration&&<ProfileQrGenerator cells={registrationCells}/>}
    <div className="profilelinks">
     {canAccessPanel(a.role)&&<Link className="panel" href="/panel">

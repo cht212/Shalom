@@ -6,6 +6,7 @@ import {isOnline,useOnline} from './use-online';
 import {OfflineMessage} from './online-only';
 import {PwaInstallContext} from './pwa-install';
 import LaunchScreen from './launch-screen';
+import AppUpdater from './app-updater';
 
 type InstallEvent=Event&{prompt:()=>Promise<void>;userChoice:Promise<{outcome:'accepted'|'dismissed'}>};
 export default function PwaRuntime({children}:{children:React.ReactNode}){
@@ -13,11 +14,12 @@ export default function PwaRuntime({children}:{children:React.ReactNode}){
  const [install,setInstall]=useState<InstallEvent|null>(null),[installed,setInstalled]=useState(true),[ios,setIos]=useState(false);
  const [registration,setRegistration]=useState<ServiceWorkerRegistration|null>(null),[update,setUpdate]=useState(false),[notice,setNotice]=useState('');
  const [downloadsOpen,setDownloadsOpen]=useState(false);
+ const [updaterOpen,setUpdaterOpen]=useState(false);
  const applying=useRef(false),dialog=useRef<HTMLDialogElement>(null),installDialog=useRef<HTMLDialogElement>(null);
  useEffect(()=>{
   const standalone=matchMedia('(display-mode: standalone)');
   const check=()=>{const appMode=standalone.matches||!!(navigator as Navigator&{standalone?:boolean}).standalone;setInstalled(appMode);document.documentElement.dataset.appMode=appMode?'standalone':'web'};
-  void Promise.resolve().then(()=>{check();setIos(/iPad|iPhone|iPod/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1)});
+  void Promise.resolve().then(()=>{check();setIos(/iPad|iPhone|iPod/.test(navigator.userAgent)||navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);if(new URLSearchParams(location.search).get('actualizar')==='1')setUpdaterOpen(true)});
   const prompt=(event:Event)=>{event.preventDefault();setInstall(event as InstallEvent)};
   const didInstall=()=>{setInstalled(true);setInstall(null);installDialog.current?.close()};
   window.addEventListener('beforeinstallprompt',prompt);window.addEventListener('appinstalled',didInstall);standalone.addEventListener('change',check);
@@ -59,18 +61,21 @@ export default function PwaRuntime({children}:{children:React.ReactNode}){
   if(ios||!install){installDialog.current?.showModal();return}
   try{await install.prompt();await install.userChoice;setInstall(null)}catch{installDialog.current?.showModal();}
  }
+ function applyUpdate(value:ServiceWorkerRegistration){if(value.waiting){applying.current=true;value.waiting.postMessage({type:'APPLY_UPDATE'})}}
  const privateSection=pathname!=='/'&&pathname!=='/offline';
- return <PwaInstallContext.Provider value={{installed,requestInstall}}>
+ return <PwaInstallContext.Provider value={{installed,requestInstall,openUpdates:()=>setUpdaterOpen(true)}}>
   <LaunchScreen/>
   {!online&&<div className="pwa-banner" role="status">Sin conexión · Biblia y guardados disponibles en este dispositivo. Los formularios necesitan internet.</div>}
-  {update&&<div className="pwa-banner" role="status">Hay una actualización disponible <button className="outline" onClick={()=>{if(registration?.waiting){applying.current=true;registration.waiting.postMessage({type:'APPLY_UPDATE'})}}}>Actualizar ahora</button><small>La aplicación se recargará. Termina tus formularios antes de actualizar.</small></div>}
+  {update&&<div className="pwa-banner" role="status">Hay una actualización disponible <button className="outline" onClick={()=>{if(registration)applyUpdate(registration)}}>Actualizar ahora</button><small>La aplicación se recargará. Termina tus formularios antes de actualizar.</small></div>}
   {!online&&privateSection?<main><OfflineMessage/></main>:children}
   <div className="pwa-tools">
    {!installed&&<button className="textbtn" onClick={requestInstall}>Instalar Shalom</button>}
    {installed&&<button className="textbtn" onClick={()=>{setDownloadsOpen(true);dialog.current?.showModal()}}>Administrar descargas</button>}
+   <button className="textbtn" onClick={()=>setUpdaterOpen(true)}>Actualizar Shalom</button>
    {notice&&<p role="status">{notice}</p>}
   </div>
   <dialog ref={dialog} className="pwa-dialog" aria-labelledby="pwa-download-title" onClose={()=>setDownloadsOpen(false)}><div className="pwa-dialog-header"><h2 id="pwa-download-title">Shalom sin conexión</h2><button className="outline" onClick={()=>dialog.current?.close()} aria-label="Cerrar descargas">Cerrar</button></div>{downloadsOpen&&<DownloadManager/>}</dialog>
+  <AppUpdater open={updaterOpen} onClose={()=>setUpdaterOpen(false)} registration={registration} onRegistration={setRegistration} onApply={applyUpdate}/>
   <dialog ref={installDialog} className="pwa-dialog pwa-install-dialog" aria-labelledby="pwa-install-title"><div className="pwa-dialog-header"><h2 id="pwa-install-title">Instalar Shalom</h2><button className="outline" onClick={()=>installDialog.current?.close()} aria-label="Cerrar instrucciones de instalación">Cerrar</button></div>{ios?<p>Abre esta página en Safari. Toca <b>Compartir</b> → <b>Agregar a pantalla de inicio</b> → <b>Agregar</b>.</p>:<><p>Abre el menú de tu navegador <b>⋮</b> y elige <b>Instalar aplicación</b> o <b>Agregar a pantalla de inicio</b>. En computadora también puede aparecer un icono de instalación en la barra de direcciones.</p><p>Si abriste el enlace dentro de Facebook o WhatsApp, elige <b>Abrir en Chrome</b> o en tu navegador habitual.</p></>}<p className="pwa-install-note">Si Shalom ya está instalada, ábrela desde el icono de tu dispositivo. El navegador puede ocultar la opción de instalar.</p></dialog>
  </PwaInstallContext.Provider>;
 }
