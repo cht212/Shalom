@@ -47,7 +47,7 @@ El estado de conexión combina la señal del navegador y los fallos de red de la
 
 ## Buscar un pasaje de la Biblia
 
-La barra de lectura incluye búsqueda por nombre o referencia y tres controles: Libro, Capítulo y Versículo. En el celular se abre un panel inferior con botones grandes; en computadora se abre un cuadro centrado. Los libros se pueden filtrar por Antiguo y Nuevo Testamento.
+La cabecera incluye búsqueda por nombre o referencia con coincidencias locales mientras escribes. No muestra texto de relleno: permite seleccionar una sugerencia con toque, ratón o teclado. El lector conserva tres selectores compactos y visibles: Libro, Capítulo y Versículo. Las referencias ambiguas también pueden abrir el navegador completo de libros.
 
 - `Pedro` ofrece `1 Pedro` y `2 Pedro` para elegir.
 - `Salmos 23` abre el capítulo completo.
@@ -79,4 +79,4 @@ Referencias: [PWA en Next.js](https://nextjs.org/docs/app/guides/progressive-web
 
 Antes de publicar, comprobar manualmente en Android/Chrome, iPhone/Safari y Windows: instalación desde un origen HTTPS, apertura desde el icono, navegación, cierre y reapertura en modo avión, recuperación de conexión con una cuenta de prueba y aplicación de una actualización. La sincronización contra Neon y el audio real requieren las variables de entorno correspondientes y una cuenta/servidor de prueba.
 
-No se ha hecho push ni despliegue como parte de este trabajo.
+La dirección pública estable es `https://shalom-sigma-two.vercel.app`. Las actualizaciones se publican desde `main`; las direcciones largas de despliegues anteriores no deben usarse para instalar la app.

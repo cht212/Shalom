@@ -41,7 +41,6 @@ with sync_playwright() as p:
     page.route('**/api/formation', lambda route: route.fulfill(json={'books': [{'id': 'discipulado-1', 'title': 'Discipulado 1'}], 'own': [{'book': 'discipulado-1'}]}))
     page.route('**/api/study', lambda route: route.fulfill(status=401, json={'error': 'Fixture without cloud sync'}))
     page.goto('http://localhost:3700', wait_until='domcontentloaded')
-    page.locator('.formation-book h3').wait_for()
     page.locator('.home-verse').wait_for()
     assert page.locator('.formation-book,.formation-section').count() == 0
     page.screenshot(path=str(output / 'signed-in-mobile.png'))

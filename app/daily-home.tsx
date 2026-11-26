@@ -2,11 +2,12 @@
 
 import {useEffect,useState} from 'react';
 import Link from 'next/link';
-import {ArrowRight,LayoutDashboard,Sunrise} from 'lucide-react';
+import {ArrowRight,Church,LayoutDashboard,Sunrise} from 'lucide-react';
 import {readBibleBook} from '../lib/bible-client';
 import type {Actor} from '../lib/access';
 import books from '../public/bible/books.json';
 import {dailyPosition,limaDate} from '../lib/daily-verse';
+import {churchInfo} from '../lib/church-info';
 
 export type DailyVerse={book:string;chapter:number;verse:string;text:string};
 
@@ -29,6 +30,7 @@ export default function DailyHome({onRead,actor}:{onRead:(book:string,chapter:nu
    <span className="home-verse-label"><Sunrise size={17}/> Versículo del día <time dateTime={date}>{new Date(date+'T12:00:00').toLocaleDateString('es-PE',{day:'numeric',month:'short'})}</time></span>
    {error?<span className="home-verse-error" role="alert">{error}</span>:verse?<><q>{verse.text}</q><span className="home-verse-reference">{reference}<ArrowRight size={16}/></span></>:<span className="home-verse-loading">Preparando la lectura de hoy…</span>}
   </button>
+  <section className="home-community" aria-label="Nuestra iglesia"><Church size={20}/><div><h2>{churchInfo.name}</h2><p>{churchInfo.motto}</p>{churchInfo.socialLinks.length>0&&<div className="church-social-links">{churchInfo.socialLinks.map(link=><a key={link.url} href={link.url} target="_blank" rel="noreferrer">{link.name}</a>)}</div>}</div></section>
 
  </section>;
 }

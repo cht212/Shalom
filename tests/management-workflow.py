@@ -18,14 +18,14 @@ with sync_playwright() as p:
         page.locator('.home-verse q').wait_for()
         assert page.locator('.home-dashboard>.home-welcome,.formation-section').count()==0
         assert page.locator('.home-dashboard>button').count()==1
-        search=page.get_by_role('searchbox',name='Buscar libro o referencia bíblica')
+        search=page.get_by_role('combobox',name='Buscar libro o referencia bíblica')
         assert search.get_attribute('placeholder')==''
-        assert page.locator('.header-bible-search button').inner_text()==''
+        assert page.locator('.header-bible-search>button').inner_text()==''
         assert page.evaluate('document.documentElement.scrollWidth<=innerWidth')
         if width==375:
             page.screenshot(path=str(out/'guest-home.png'))
             search.fill('Juan 3:16')
-            page.locator('.header-bible-search button').click()
+            page.locator('.header-bible-search>button').click()
             page.locator('#bible-verse-16.versechosen').wait_for()
     print('PASS guest sees only daily verse; text-free direct search works; 4 widths',flush=True)
     page.close();guest.close()
